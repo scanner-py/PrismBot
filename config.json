@@ -1,0 +1,5 @@
+{
+    "testServer": "your server id here ", 
+    "clientID": "your bot id here", 
+    "devs": ["dev team id here"] 
+}
