@@ -16,6 +16,13 @@ client.on("messageCreate", (message) => {
   handlePrefixCommands(client, message);
 });
 
+client.on("messageCreate", (message) => {
+  const egg = message.content.toLowerCase();
+  if (egg.includes('egg')) {
+    message.react("🥚");
+  }
+});
+
 eventHandlers(client);
 
 client.login(process.env.BOT_TOKEN);

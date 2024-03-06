@@ -7,6 +7,7 @@ module.exports = {
   description: "need help?",
 
   callback: (client, intersection) => {
-    intersection.reply(`sorry but i cannot help you now`);
+    const channel = intersection.channel;
+    channel.send("Sorry, but I cannot help you right now.");
   },
 };
