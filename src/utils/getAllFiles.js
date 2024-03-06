@@ -8,7 +8,6 @@ module.exports = (directory, foldersOnly = false) => {
 
   for (const file of files) {
     const filePath = path.join(directory, file.name);
-
     if (foldersOnly) {
       if (file.isDirectory()) {
         filesNames.push(filePath);

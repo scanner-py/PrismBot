@@ -1,8 +1,7 @@
 require("dotenv").config();
-const { Client, GatewayIntentBits } = require("discord.js");
+const { Client, GatewayIntentBits, EmbedBuilder } = require("discord.js");
 const eventHandlers = require("./handlers/eventHandlers");
-const { intersection } = require("lodash");
-// const getAllFiles = require("./src/handlers/getAllFiles");
+const handlePrefixCommands = require("./events/interactionCreate/handlePrefixCommands");
 
 const client = new Client({
   intents: [
@@ -13,6 +12,9 @@ const client = new Client({
   ],
 });
 
+client.on("messageCreate", (message) => {
+  handlePrefixCommands(client, message);
+});
 
 eventHandlers(client);
 

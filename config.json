@@ -1,5 +1,6 @@
 {
-    "testServer": "your server id here ", 
-    "clientID": "your bot id here", 
-    "devs": ["dev team id here"] 
+  "prefix": "?",
+  "testServer": "1213956513941692537",
+  "clientID": "1214202291884924958",
+  "devs": ["1021704817720172638"]
 }
