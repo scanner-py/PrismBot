@@ -51,7 +51,7 @@ module.exports = async (client, message) => {
   }
 
   try {
-    await command.callback(client, message, args);
+    await command.run(client, message, args);
   } catch (error) {
     console.log(`There was an error running this command: ${error}`);
   }

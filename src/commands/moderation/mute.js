@@ -3,9 +3,11 @@ const {
   Interaction,
   ApplicationCommandOptionType,
   PermissionFlagsBits,
-  EmbedBuilder
+  EmbedBuilder,
 } = require("discord.js");
 const ms = require("ms");
+const checkUserPermissions = require("../../utils/checkUserPermissions");
+const checkUserPermissionsPrefixCmd = require("../../utils/checkUserPermissionsPrefixCmd");
 
 module.exports = {
   /**
@@ -21,31 +23,8 @@ module.exports = {
       interaction.options.get("reason")?.value || "No reason provided";
 
     await interaction.deferReply();
-
-    const targetUser = await interaction.guild.members.fetch(mentionable);
-    if (!targetUser) {
-      const embed = new EmbedBuilder()
-        .setDescription(`:x: | That user doesn't exist in this server.`)
-        .setColor("#ff1e45");
-      await interaction.editReply({ embeds: [embed] });
-      return;
-    }
-
-    if (targetUser.permissions.has(PermissionFlagsBits.Administrator)) {
-      const embed = new EmbedBuilder()
-        .setDescription(`:x: | That user is an admin, i can't do that`)
-        .setColor("#ff1e45");
-      await interaction.editReply({ embeds: [embed] });
-      return;
-    }
-
-    if (targetUser.user.bot) {
-      const embed = new EmbedBuilder()
-        .setDescription(`:x: | he is like a brother to me`)
-        .setColor("#ff1e45");
-      await interaction.editReply({ embeds: [embed] });
-      return;
-    }
+    const targetUser = await checkUserPermissions(interaction, mentionable);
+    if (!targetUser) return;
 
     const msDuration = ms(duration);
     if (isNaN(msDuration)) {
@@ -63,31 +42,6 @@ module.exports = {
         )
         .setColor("#ff1e45");
       await interaction.editReply({ embeds: [embed] });
-      return;
-    }
-
-    const targetUserRolePosition = targetUser.roles.highest.position; // Highest role of the target user
-    const requestUserRolePosition = interaction.member.roles.highest.position; // Highest role of the user running the cmd
-    const botRolePosition = interaction.guild.members.me.roles.highest.position; // Highest role of the bot
-
-    if (targetUserRolePosition >= requestUserRolePosition) {
-      const embed = new EmbedBuilder()
-        .setDescription(
-          `:x: | You don't have enough permission to use this command`
-        )
-        .setColor("#ff1e45");
-      await interaction.editReply({ embeds: [embed] });
-      return;
-    }
-
-    if (targetUserRolePosition >= botRolePosition) {
-      const embed = new EmbedBuilder()
-        .setDescription(
-          `:x: | They have the same or higher role than me, i can't do that`
-        )
-        .setColor("#ff1e45");
-      await interaction.editReply({ embeds: [embed] });
-
       return;
     }
 
@@ -123,6 +77,68 @@ module.exports = {
         )
         .setColor("#2ecc71");
       await interaction.editReply({ embeds: [embed] });
+    } catch (error) {
+      console.log(`There was an error when timing out: ${error}`);
+    }
+  },
+
+  run: async (client, message, args) => {
+    const mentionedUser = message.mentions.members.first();
+    const duration = args[1];
+    const reason = args.slice(2).join(" ") || "No reason provided";
+    const targetUser = await checkUserPermissionsPrefixCmd(
+      message,
+      mentionedUser
+    );
+    if (!targetUser) return; // If the function returns null, exit the command
+
+    const msDuration = ms(duration);
+    if (isNaN(msDuration)) {
+      const embed = new EmbedBuilder()
+        .setDescription(`:x: | Please provide a valid timeout duration.`)
+        .setColor("#ff1e45");
+      return message.reply({ embeds: [embed] });
+    }
+
+    if (msDuration < 5000 || msDuration > 2.419e9) {
+      const embed = new EmbedBuilder()
+        .setDescription(
+          `:x: | Timeout duration cannot be less than 5 seconds or more than 28 days.`
+        )
+        .setColor("#ff1e45");
+      return message.reply({ embeds: [embed] });
+    }
+
+    try {
+      const { default: prettyMs } = await import("pretty-ms");
+
+      if (mentionedUser.isCommunicationDisabled()) {
+        await mentionedUser.timeout(msDuration, reason);
+        const embed = new EmbedBuilder()
+          .setDescription(
+            `:white_check_mark: | ${mentionedUser}'s timeout has been updated to ${prettyMs(
+              msDuration,
+              {
+                verbose: true,
+              }
+            )} | ${reason}`
+          )
+          .setColor("#2ecc71");
+        return message.reply({ embeds: [embed] });
+      }
+
+      await mentionedUser.timeout(msDuration, reason);
+      const embed = new EmbedBuilder()
+        .setDescription(
+          `:white_check_mark: | ${mentionedUser} was timed out for ${prettyMs(
+            msDuration,
+            {
+              verbose: true,
+            }
+          )} | ${reason}`
+        )
+        .setColor("#2ecc71");
+      return message.reply({ embeds: [embed] });
     } catch (error) {
       console.log(`There was an error when timing out: ${error}`);
     }

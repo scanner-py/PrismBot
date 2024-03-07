@@ -23,4 +23,22 @@ module.exports = {
 
     interaction.editReply({ embeds: [embed] });
   },
+
+  run: async (client, message, args) => {
+    message.reply("Loading data....").then(async (msg) => {
+      msg.delete();
+      const embed = new EmbedBuilder()
+        .setTitle("Pong!")
+        .setDescription(
+          `**Client latency**: \`${
+            msg.createdTimestamp - message.createdTimestamp
+          }ms\`\n\n**Discord API latency**: \`${client.ws.ping}ms\``
+        )
+        .setColor("f1c40f")
+        .setTimestamp();
+      message.reply({ embeds: [embed] });
+    });
+
+    // message.reply();
+  },
 };
