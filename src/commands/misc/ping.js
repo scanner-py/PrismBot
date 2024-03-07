@@ -4,7 +4,7 @@ const { createEmbed } = require("../../utils/templates/butterEmbed");
 
 module.exports = {
   name: "ping",
-  description: "Check the bot's ping",
+  description: "Check the bot ping",
 
   callback: async (client, interaction) => {
     await interaction.deferReply();

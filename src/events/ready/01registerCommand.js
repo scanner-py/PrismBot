@@ -1,7 +1,8 @@
-const { testServer } = require('../../../config.json');
-const areCommandsDifferent = require('../../utils/areCommandsDifferent');
-const getApplicationCommands = require('../../utils/getApplicationCommands');
-const getLocalCommands = require('../../utils/getLocalCommands');
+const { testServer } = require("../../../config.json");
+const areCommandsDifferent = require("../../utils/areCommandsDifferent");
+const getApplicationCommands = require("../../utils/getApplicationCommands");
+const getLocalCommands = require("../../utils/getLocalCommands");
+const chalk = require("chalk");
 
 module.exports = async (client) => {
   try {
@@ -21,7 +22,7 @@ module.exports = async (client) => {
       if (existingCommand) {
         if (localCommand.deleted) {
           await applicationCommands.delete(existingCommand.id);
-          console.log(`🗑 Deleted command "${name}".`);
+          console.log(chalk.red(`❌ Deleted command "${name}".`));
           continue;
         }
 
@@ -31,12 +32,14 @@ module.exports = async (client) => {
             options,
           });
 
-          console.log(`🔁 Edited command "${name}".`);
+          console.log(chalk.hex("#eb34e1")(`🔁 Edited command "${name}".`));
         }
       } else {
         if (localCommand.deleted) {
           console.log(
-            `⏩ Skipping registering command "${name}" as it's set to delete.`
+            chalk.blue(
+              `⏩ Skipping registering command "${name}" as it's set to delete.`
+            )
           );
           continue;
         }
@@ -47,10 +50,10 @@ module.exports = async (client) => {
           options,
         });
 
-        console.log(`👍 Registered command "${name}."`);
+        console.log(chalk.hex("#00FF00")(`✅ Registered command "${name}."`));
       }
     }
   } catch (error) {
-    console.log(`TThere was an error: ${error}`);
+    console.log(chalk.red(`There was an error: ${error}`));
   }
 };
