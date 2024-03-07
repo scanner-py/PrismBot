@@ -15,7 +15,7 @@ module.exports = (existingCommand, localCommand) => {
       }
       return false;
     };
-  
+  //
     const areOptionsDifferent = (existingOptions, localOptions) => {
       for (const localOption of localOptions) {
         const existingOption = existingOptions?.find(
