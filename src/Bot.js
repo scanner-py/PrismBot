@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { Client, GatewayIntentBits, EmbedBuilder } = require("discord.js");
+const { Client, GatewayIntentBits} = require("discord.js");
 const eventHandlers = require("./handlers/eventHandlers");
 const handlePrefixCommands = require("./events/interactionCreate/handlePrefixCommands");
 
@@ -11,6 +11,8 @@ const client = new Client({
     GatewayIntentBits.GuildMessages,
   ],
 });
+
+
 
 client.on("messageCreate", (message) => {
   handlePrefixCommands(client, message);
