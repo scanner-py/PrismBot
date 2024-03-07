@@ -1,6 +1,5 @@
 const { EmbedBuilder, version } = require("discord.js");
 const os = require("os");
-const { createEmbed } = require("../../utils/templates/butterEmbed");
 
 module.exports = {
   name: "stats",

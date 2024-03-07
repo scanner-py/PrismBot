@@ -3,9 +3,10 @@ const {
   Interaction,
   ApplicationCommandOptionType,
   PermissionFlagsBits,
+  EmbedBuilder
 } = require("discord.js");
 const ms = require("ms");
-const { createEmbed } = require("../../utils/templates/butterEmbed");
+
 module.exports = {
   /**
    *
@@ -22,7 +23,7 @@ module.exports = {
 
     const targetUser = await interaction.guild.members.fetch(mentionable);
     if (!targetUser) {
-      const embed = createEmbed()
+      const embed = new EmbedBuilder()
         .setDescription(`:x: That user doesn't exist in this server.`)
         .setColor("#ff1e45");
       await interaction.editReply({ embeds: [embed] });
@@ -30,7 +31,7 @@ module.exports = {
     }
 
     if (targetUser.permissions.has(PermissionFlagsBits.Administrator)) {
-      const embed = createEmbed()
+      const embed = new EmbedBuilder()
         .setDescription(`:x: That user is a admin, i can't do that`)
         .setColor("#ff1e45");
       await interaction.editReply({ embeds: [embed] });
@@ -38,7 +39,7 @@ module.exports = {
     }
 
     if (targetUser.user.bot) {
-      const embed = createEmbed()
+      const embed = new EmbedBuilder()
         .setDescription(`:x: That user is a bot, i can't do that`)
         .setColor("#ff1e45");
       await interaction.editReply({ embeds: [embed] });
@@ -50,7 +51,7 @@ module.exports = {
     const botRolePosition = interaction.guild.members.me.roles.highest.position; // Highest role of the bot
 
     if (targetUserRolePosition >= requestUserRolePosition) {
-      const embed = createEmbed()
+      const embed = new EmbedBuilder()
         .setDescription(`:x: You don't have enough permission to use this command`)
         .setColor("#ff1e45");
       await interaction.editReply({ embeds: [embed] });
@@ -58,7 +59,7 @@ module.exports = {
     }
 
     if (targetUserRolePosition >= botRolePosition) {
-      const embed = createEmbed()
+      const embed = new EmbedBuilder()
         .setDescription(
           `:x: They have the same or higher role than me, i can't do that`
         )
@@ -72,7 +73,7 @@ module.exports = {
 
       if (targetUser.isCommunicationDisabled()) {
         await targetUser.timeout(null, reason);
-        const embed = createEmbed().setDescription(
+        const embed = new EmbedBuilder().setDescription(
           `:white_check_mark: ${targetUser}'s mute has been removed | ${reason}`
         ).setColor("#2ecc71");
         await interaction.editReply({ embeds: [embed] });
@@ -80,7 +81,7 @@ module.exports = {
       }
 
       await targetUser.timeout(null, reason);
-      const embed = createEmbed().setDescription(
+      const embed = new EmbedBuilder().setDescription(
         ` :x:  ${targetUser} is not muted | ${reason}`
       ).setColor("#ff1e45");
       await interaction.editReply({ embeds: [embed] });

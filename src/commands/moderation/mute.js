@@ -3,9 +3,10 @@ const {
   Interaction,
   ApplicationCommandOptionType,
   PermissionFlagsBits,
+  EmbedBuilder
 } = require("discord.js");
 const ms = require("ms");
-const { createEmbed } = require("../../utils/templates/butterEmbed");
+
 module.exports = {
   /**
    *
@@ -23,7 +24,7 @@ module.exports = {
 
     const targetUser = await interaction.guild.members.fetch(mentionable);
     if (!targetUser) {
-      const embed = createEmbed()
+      const embed = new EmbedBuilder()
         .setDescription(`:x: | That user doesn't exist in this server.`)
         .setColor("#ff1e45");
       await interaction.editReply({ embeds: [embed] });
@@ -31,7 +32,7 @@ module.exports = {
     }
 
     if (targetUser.permissions.has(PermissionFlagsBits.Administrator)) {
-      const embed = createEmbed()
+      const embed = new EmbedBuilder()
         .setDescription(`:x: | That user is an admin, i can't do that`)
         .setColor("#ff1e45");
       await interaction.editReply({ embeds: [embed] });
@@ -39,7 +40,7 @@ module.exports = {
     }
 
     if (targetUser.user.bot) {
-      const embed = createEmbed()
+      const embed = new EmbedBuilder()
         .setDescription(`:x: | he is like a brother to me`)
         .setColor("#ff1e45");
       await interaction.editReply({ embeds: [embed] });
@@ -48,7 +49,7 @@ module.exports = {
 
     const msDuration = ms(duration);
     if (isNaN(msDuration)) {
-      const embed = createEmbed()
+      const embed = new EmbedBuilder()
         .setDescription(`:x: | Please provide a valid timeout duration.`)
         .setColor("#ff1e45");
       await interaction.editReply({ embeds: [embed] });
@@ -56,7 +57,7 @@ module.exports = {
     }
 
     if (msDuration < 5000 || msDuration > 2.419e9) {
-      const embed = createEmbed()
+      const embed = new EmbedBuilder()
         .setDescription(
           `:x: | Timeout duration cannot be less than 5 seconds or more than 28 days.`
         )
@@ -70,7 +71,7 @@ module.exports = {
     const botRolePosition = interaction.guild.members.me.roles.highest.position; // Highest role of the bot
 
     if (targetUserRolePosition >= requestUserRolePosition) {
-      const embed = createEmbed()
+      const embed = new EmbedBuilder()
         .setDescription(
           `:x: | You don't have enough permission to use this command`
         )
@@ -80,7 +81,7 @@ module.exports = {
     }
 
     if (targetUserRolePosition >= botRolePosition) {
-      const embed = createEmbed()
+      const embed = new EmbedBuilder()
         .setDescription(
           `:x: | They have the same or higher role than me, i can't do that`
         )
@@ -96,7 +97,7 @@ module.exports = {
 
       if (targetUser.isCommunicationDisabled()) {
         await targetUser.timeout(msDuration, reason);
-        const embed = createEmbed()
+        const embed = new EmbedBuilder()
           .setDescription(
             `:white_check_mark: | ${targetUser}'s timeout has been updated to ${prettyMs(
               msDuration,
@@ -111,7 +112,7 @@ module.exports = {
       }
 
       await targetUser.timeout(msDuration, reason);
-      const embed = createEmbed()
+      const embed = new EmbedBuilder()
         .setDescription(
           `:white_check_mark: | ${targetUser} was timed out for ${prettyMs(
             msDuration,

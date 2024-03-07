@@ -1,6 +1,5 @@
-const { EmbedBuilder, version } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const os = require("os");
-const { createEmbed } = require("../../utils/templates/butterEmbed");
 
 module.exports = {
   name: "ping",
@@ -13,7 +12,7 @@ module.exports = {
     const botPing = reply.createdTimestamp - interaction.createdTimestamp;
     const wsping = client.ws.ping;
 
-    const embed = createEmbed()
+    const embed = new EmbedBuilder()
       .setTitle("Pong!")
       .setDescription(
         `**Client latency**: \`${botPing}ms\`\n\n**Discord API latency **: \`${wsping}ms\``
