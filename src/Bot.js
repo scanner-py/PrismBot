@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { Client, GatewayIntentBits} = require("discord.js");
+const { Client, GatewayIntentBits } = require("discord.js");
 const eventHandlers = require("./handlers/eventHandlers");
 const handlePrefixCommands = require("./events/interactionCreate/handlePrefixCommands");
 
@@ -12,15 +12,13 @@ const client = new Client({
   ],
 });
 
-
-
 client.on("messageCreate", (message) => {
   handlePrefixCommands(client, message);
 });
 
 client.on("messageCreate", (message) => {
   const egg = message.content.toLowerCase();
-  if (egg.includes('egg')) {
+  if (egg.includes("egg")) {
     message.react("🥚");
   }
 });

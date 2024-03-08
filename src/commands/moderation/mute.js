@@ -17,9 +17,6 @@ module.exports = {
    */
 
   callback: async (client, interaction) => {
-    const deleteRespond = (msg) => {
-      setTimeout(() => msg.delete(), 5000); // delete the reply after 5 sce
-    };
     const mentionable = interaction.options.get("user").value;
     const duration = interaction.options.get("duration").value; // 1d, 1 day, 1s 5s, 5m
     const reason =
@@ -31,7 +28,7 @@ module.exports = {
         .setDescription(`:x: | You cannot mute yourself.`)
         .setColor("#ff1e45");
       await interaction.reply({ embeds: [embed],
-        ephemeral: true }).then(deleteRespond);
+        ephemeral: true });
       return;
     }
 
