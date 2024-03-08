@@ -25,7 +25,7 @@ module.exports = {
     // Check if the user is trying to mute themselves
     if (mentionable === interaction.user.id) {
       const embed = new EmbedBuilder()
-        .setDescription(`:x: | You cannot mute yourself.`)
+        .setDescription(`:x: You cannot mute yourself.`)
         .setColor("#ff1e45");
       await interaction.reply({ embeds: [embed], ephemeral: true });
       return;
@@ -37,7 +37,7 @@ module.exports = {
     const msDuration = ms(duration);
     if (isNaN(msDuration)) {
       const embed = new EmbedBuilder()
-        .setDescription(`:x: | Please provide a valid timeout duration.`)
+        .setDescription(`:x: Please provide a valid mute duration.`)
         .setColor("#ff1e45");
       await interaction.reply({ embeds: [embed], ephemeral: true });
       return;
@@ -46,7 +46,7 @@ module.exports = {
     if (msDuration < 5000 || msDuration > 2.419e9) {
       const embed = new EmbedBuilder()
         .setDescription(
-          `:x: | Timeout duration cannot be less than 5 seconds or more than 28 days.`
+          `:x: Mute duration cannot be less than 5 seconds or more than 28 days.`
         )
         .setColor("#ff1e45");
       await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -61,7 +61,7 @@ module.exports = {
         await targetUser.timeout(msDuration, reason);
         const embed = new EmbedBuilder()
           .setDescription(
-            `:white_check_mark: | ${targetUser}'s timeout has been updated to ${prettyMs(
+            `:white_check_mark: ${targetUser}'s mute duration has been updated to ${prettyMs(
               msDuration,
               {
                 verbose: true,
@@ -93,7 +93,7 @@ module.exports = {
       const embed = new EmbedBuilder()
 
         .setDescription(
-          `:white_check_mark: | ${targetUser} was timed out for ${prettyMs(
+          `:white_check_mark: ${targetUser} was muted for ${prettyMs(
             msDuration,
             {
               verbose: true,
@@ -121,7 +121,7 @@ module.exports = {
 
     if (mentionedUser.id === message.author.id) {
       const embed = new EmbedBuilder()
-        .setDescription(`:x: | You cannot mute yourself.`)
+        .setDescription(`:x: You cannot mute yourself.`)
         .setColor("#ff1e45");
       return message.reply({ embeds: [embed] }).then(deleteRespond);
     }
@@ -131,7 +131,7 @@ module.exports = {
     const msDuration = ms(duration);
     if (isNaN(msDuration)) {
       const embed = new EmbedBuilder()
-        .setDescription(`:x: | Please provide a valid timeout duration.`)
+        .setDescription(`:x: Please provide a valid mute duration.`)
         .setColor("#ff1e45");
       return message.reply({ embeds: [embed] }).then(deleteRespond);
     }
@@ -139,7 +139,7 @@ module.exports = {
     if (msDuration < 5000 || msDuration > 2.419e9) {
       const embed = new EmbedBuilder()
         .setDescription(
-          `:x: | Timeout duration cannot be less than 5 seconds or more than 28 days.`
+          `:x: Mute duration cannot be less than 5 seconds or more than 28 days.`
         )
         .setColor("#ff1e45");
       return message.reply({ embeds: [embed] }.then(deleteRespond));
@@ -152,7 +152,7 @@ module.exports = {
         await mentionedUser.timeout(msDuration, reason);
         const embed = new EmbedBuilder()
           .setDescription(
-            `:white_check_mark: | ${mentionedUser}'s mute has extended to ${prettyMs(
+            `:white_check_mark: | ${mentionedUser}'s mute duration has been updated to ${prettyMs(
               msDuration,
               {
                 verbose: true,
@@ -181,7 +181,7 @@ module.exports = {
       await mentionedUser.timeout(msDuration, reason);
       const embed = new EmbedBuilder()
         .setDescription(
-          `:white_check_mark: | ${mentionedUser} has been muted for ${prettyMs(
+          `:white_check_mark: ${mentionedUser} was muted for ${prettyMs(
             msDuration,
             {
               verbose: true,

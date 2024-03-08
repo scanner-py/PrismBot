@@ -107,7 +107,7 @@ module.exports = {
     },
     {
       name: "reason",
-      description: "Reason for the mute.",
+      description: "Reason for the kick.",
       type: ApplicationCommandOptionType.String,
     },
   ],

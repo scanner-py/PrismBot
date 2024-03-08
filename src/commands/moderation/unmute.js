@@ -35,7 +35,7 @@ module.exports = {
         await targetUser.timeout(null, reason);
         const embed = new EmbedBuilder()
           .setDescription(
-            `:white_check_mark: ${targetUser}'s mute has been removed | ${reason}`
+            `:white_check_mark: ${targetUser} was unmuted | ${reason}`
           )
           .setColor("#2ecc71");
         await interaction.editReply({ embeds: [embed] });
@@ -72,7 +72,7 @@ module.exports = {
         await mentionedUser.timeout(null, reason);
         const embed = new EmbedBuilder()
           .setDescription(
-            `:white_check_mark: ${targetUser}'s mute has been removed | ${reason}`
+            `:white_check_mark: ${targetUser} was unmuted | ${reason}`
           )
           .setColor("#2ecc71");
         return message.channel.send({ embeds: [embed] });
