@@ -31,9 +31,9 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setTitle("Pong!")
         .setDescription(
-          `**Client latency**: \`${
+          `**Client latency**: ${
             msg.createdTimestamp - message.createdTimestamp
-          }ms\`\n\n**Discord API latency**: \`${client.ws.ping}ms\``
+          }ms \n \n**Discord API latency**: ${client.ws.ping}ms`
         )
         .setColor(butter)
         .setTimestamp();
