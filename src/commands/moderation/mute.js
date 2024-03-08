@@ -25,6 +25,16 @@ module.exports = {
     const reason =
       interaction.options.get("reason")?.value || "No reason provided";
 
+    // Check if the user is trying to mute themselves
+    if (mentionable === interaction.user.id) {
+      const embed = new EmbedBuilder()
+        .setDescription(`:x: | You cannot mute yourself.`)
+        .setColor("#ff1e45");
+      await interaction.reply({ embeds: [embed],
+        ephemeral: true }).then(deleteRespond);
+      return;
+    }
+
     // await interaction.deferReply();
     const targetUser = await checkUserPermissions(interaction, mentionable);
     if (!targetUser) return;
@@ -33,7 +43,8 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setDescription(`:x: | Please provide a valid timeout duration.`)
         .setColor("#ff1e45");
-      await interaction.reply({ embeds: [embed] }).then(deleteRespond);
+      await interaction.reply({ embeds: [embed],
+        ephemeral: true });
       return;
     }
 
@@ -43,7 +54,8 @@ module.exports = {
           `:x: | Timeout duration cannot be less than 5 seconds or more than 28 days.`
         )
         .setColor("#ff1e45");
-      await interaction.reply({ embeds: [embed] }).then(deleteRespond);
+      await interaction.reply({ embeds: [embed],
+        ephemeral: true });
       return;
     }
 
@@ -96,6 +108,14 @@ module.exports = {
       message,
       mentionedUser
     );
+
+    if (mentionedUser.id === message.author.id) {
+      const embed = new EmbedBuilder()
+        .setDescription(`:x: | You cannot mute yourself.`)
+        .setColor("#ff1e45");
+      return message.reply({ embeds: [embed] }).then(deleteRespond);
+    }
+
     if (!targetUser) return; // If the function returns null, exit the command
 
     const msDuration = ms(duration);
