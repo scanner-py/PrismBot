@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
 const os = require("os");
+const { butter } = require("../../../data/colors.json");
 
 module.exports = {
   name: "ping",
@@ -17,7 +18,7 @@ module.exports = {
       .setDescription(
         `**Client latency**: \`${botPing}ms\`\n\n**Discord API latency **: \`${wsping}ms\``
       )
-      .setColor("f1c40f")
+      .setColor(butter)
 
       .setTimestamp();
 
@@ -34,7 +35,7 @@ module.exports = {
             msg.createdTimestamp - message.createdTimestamp
           }ms\`\n\n**Discord API latency**: \`${client.ws.ping}ms\``
         )
-        .setColor("f1c40f")
+        .setColor(butter)
         .setTimestamp();
       message.channel.send({ embeds: [embed] });
     });

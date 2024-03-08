@@ -1,6 +1,7 @@
 const { devs, testServer } = require("../../../config.json");
 const getLocalCommands = require("../../utils/getLocalCommands");
 const { EmbedBuilder } = require("discord.js");
+const { red } = require("../../../data/colors.json");
 
 module.exports = async (client, interaction) => {
   if (!interaction.isChatInputCommand()) return;
@@ -17,7 +18,7 @@ module.exports = async (client, interaction) => {
     if (commandObject.devOnly) {
       if (!devs.includes(interaction.member.id)) {
         const embed = new EmbedBuilder()
-          .setColor("#ff1e45")
+          .setColor(red)
           .setTitle("Access Denied")
           .setDescription("Only developers are allowed to run this command.");
 
@@ -31,8 +32,12 @@ module.exports = async (client, interaction) => {
 
     if (commandObject.testOnly) {
       if (!(interaction.guild.id === testServer)) {
+        const embed = new EmbedBuilder()
+          .setColor(red)
+          .setTitle("Access Denied")
+          .setDescription("This command cannot be ran here.");
         interaction.reply({
-          content: "This command cannot be ran here.",
+          embeds: [embed],
           ephemeral: true,
         });
         return;
@@ -42,8 +47,12 @@ module.exports = async (client, interaction) => {
     if (commandObject.permissionsRequired?.length) {
       for (const permission of commandObject.permissionsRequired) {
         if (!interaction.member.permissions.has(permission)) {
+          const embed = new EmbedBuilder()
+            .setColor(red)
+            .setTitle("Access Denied")
+            .setDescription("you donot have enough permissions.");
           interaction.reply({
-            content: ":x: you donot have enough permissions.",
+            embeds: [embed],
             ephemeral: true,
           });
           return;
@@ -56,10 +65,14 @@ module.exports = async (client, interaction) => {
         const bot = interaction.guild.members.me;
 
         if (!bot.permissions.has(permission)) {
+          const embed = new EmbedBuilder()
+            .setColor(red)
+            .setDescription("I don't have enough permissions.");
           interaction.reply({
-            content: "I don't have enough permissions.",
+            embeds: [embed],
             ephemeral: true,
           });
+
           return;
         }
       }

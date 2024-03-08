@@ -1,4 +1,5 @@
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
+const { red } = require("../../data/colors.json");
 
 module.exports = async (message, mentionedUser) => {
   const targetUserRolePosition = mentionedUser.roles.highest.position;
@@ -11,40 +12,42 @@ module.exports = async (message, mentionedUser) => {
 
   if (!mentionedUser) {
     const embed = new EmbedBuilder()
-      .setDescription(`:x: Please mention a user.`)
-      .setColor("#ff1e45");
+      .setDescription(`<:TickNo:1215704449020989500> Please mention a user.`)
+      .setColor(red);
     return message.reply({ embeds: [embed] }).then(deleteRespond), null;
   }
 
   if (mentionedUser.user.bot) {
     const embed = new EmbedBuilder()
-      .setDescription(`:x: I cannot target bots.`)
-      .setColor("#ff1e45");
+      .setDescription(`<:TickNo:1215704449020989500> I cannot target bots.`)
+      .setColor(red);
     return message.reply({ embeds: [embed] }).then(deleteRespond), null;
   }
 
   if (targetUserRolePosition >= requestUserRolePosition) {
     const embed = new EmbedBuilder()
       .setDescription(
-        `:x: The target user role position is higher or same as your role position`
+        `<:TickNo:1215704449020989500> The target user role position is higher or same as your role position`
       )
-      .setColor("#ff1e45");
+      .setColor(red);
     return message.reply({ embeds: [embed] }).then(deleteRespond), null;
   }
 
   if (targetUserRolePosition >= botRolePosition) {
     const embed = new EmbedBuilder()
       .setDescription(
-        `:x: The target user has the same or higher role than me, I can't do that.`
+        `<:TickNo:1215704449020989500> The target user has the same or higher role than me, I can't do that.`
       )
-      .setColor("#ff1e45");
+      .setColor(red);
     return message.reply({ embeds: [embed] }).then(deleteRespond), null;
   }
 
   if (mentionedUser.permissions.has(PermissionFlagsBits.Administrator)) {
     const embed = new EmbedBuilder()
-      .setDescription(`:x: That user is an admin, I can't do that.`)
-      .setColor("#ff1e45");
+      .setDescription(
+        `<:TickNo:1215704449020989500> That user is an admin, I can't do that.`
+      )
+      .setColor(red);
     return message.reply({ embeds: [embed] }).then(deleteRespond), null;
   }
 

@@ -5,6 +5,7 @@ const {
   PermissionFlagsBits,
   EmbedBuilder,
 } = require("discord.js");
+const { red, green } = require("../../../data/colors.json");
 const ms = require("ms");
 const checkUserPermissions = require("../../utils/checkUserPermissions");
 const checkUserPermissionsPrefixCmd = require("../../utils/checkUserPermissionsPrefixCmd");
@@ -27,7 +28,6 @@ module.exports = {
     await interaction.deferReply();
 
     const targetUser = await checkUserPermissions(interaction, mentionable);
-    const username = targetUser.username
     if (!targetUser) return;
 
     try {
@@ -35,17 +35,19 @@ module.exports = {
         await targetUser.timeout(null, reason);
         const embed = new EmbedBuilder()
           .setDescription(
-            `:white_check_mark: ${targetUser} was unmuted | ${reason}`
+            `<:TickYes:1215704707432190063> ${targetUser} was unmuted | ${reason}`
           )
-          .setColor("#2ecc71");
+          .setColor(green);
         await interaction.editReply({ embeds: [embed] });
         return;
       }
 
       await targetUser.timeout(null, reason);
       const embed = new EmbedBuilder()
-        .setDescription(` :x: i can't ${targetUser},they aren't muted.`)
-        .setColor("#ff1e45");
+        .setDescription(
+          ` <:TickNo:1215704449020989500> i can't ${targetUser},they aren't muted.`
+        )
+        .setColor(red);
       await interaction.editReply({ embeds: [embed] }).then(deleteRespond);
     } catch (error) {
       console.log(`There was an error when timing out: ${error}`);
@@ -59,7 +61,7 @@ module.exports = {
     const mentionedUser = message.mentions.members.first();
 
     const reason = args.slice(1).join(" ") || "No reason provided";
-    
+
     const targetUser = await checkUserPermissionsPrefixCmd(
       message,
       mentionedUser
@@ -72,15 +74,17 @@ module.exports = {
         await mentionedUser.timeout(null, reason);
         const embed = new EmbedBuilder()
           .setDescription(
-            `:white_check_mark: ${targetUser} was unmuted | ${reason}`
+            `<:TickYes:1215704707432190063> ${targetUser} was unmuted | ${reason}`
           )
-          .setColor("#2ecc71");
+          .setColor(green);
         return message.channel.send({ embeds: [embed] });
       }
       mentionedUser.timeout(null, reason);
       const embed = new EmbedBuilder()
-        .setDescription(` :x: i can't ${targetUser},they aren't muted.`)
-        .setColor("#ff1e45");
+        .setDescription(
+          ` <:TickNo:1215704449020989500> i can't ${targetUser},they aren't muted.`
+        )
+        .setColor(red);
       return message.channel.send({ embeds: [embed] }).then(deleteRespond);
     } catch (error) {
       console.log(`There was an error when timing out: ${error}`);

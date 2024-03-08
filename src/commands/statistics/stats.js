@@ -1,6 +1,6 @@
 const { EmbedBuilder, version } = require("discord.js");
 const os = require("os");
-
+const { butter } = require("../../../data/colors.json");
 module.exports = {
   name: "stats",
   description: "bot statistics",
@@ -17,7 +17,7 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setTitle("Statistics")
-      .setColor("#f1c40f")
+      .setColor(butter)
       .addFields(
         {
           name: "Uptime",
@@ -55,7 +55,7 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setTitle("Statistics")
-      .setColor("#f1c40f")
+      .setColor(butter)
       .addFields(
         {
           name: "Uptime",

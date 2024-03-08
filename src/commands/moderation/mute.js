@@ -8,7 +8,7 @@ const {
 const ms = require("ms");
 const checkUserPermissions = require("../../utils/checkUserPermissions");
 const checkUserPermissionsPrefixCmd = require("../../utils/checkUserPermissionsPrefixCmd");
-
+const { red, green } = require("../../../data/colors.json");
 module.exports = {
   /**
    *
@@ -25,8 +25,10 @@ module.exports = {
     // Check if the user is trying to mute themselves
     if (mentionable === interaction.user.id) {
       const embed = new EmbedBuilder()
-        .setDescription(`:x: You cannot mute yourself.`)
-        .setColor("#ff1e45");
+        .setDescription(
+          `<:TickNo:1215704449020989500> You cannot mute yourself.`
+        )
+        .setColor(red);
       await interaction.reply({ embeds: [embed], ephemeral: true });
       return;
     }
@@ -37,8 +39,10 @@ module.exports = {
     const msDuration = ms(duration);
     if (isNaN(msDuration)) {
       const embed = new EmbedBuilder()
-        .setDescription(`:x: Please provide a valid mute duration.`)
-        .setColor("#ff1e45");
+        .setDescription(
+          `<:TickNo:1215704449020989500> Please provide a valid mute duration.`
+        )
+        .setColor(red);
       await interaction.reply({ embeds: [embed], ephemeral: true });
       return;
     }
@@ -46,9 +50,9 @@ module.exports = {
     if (msDuration < 5000 || msDuration > 2.419e9) {
       const embed = new EmbedBuilder()
         .setDescription(
-          `:x: Mute duration cannot be less than 5 seconds or more than 28 days.`
+          `<:TickNo:1215704449020989500> Mute duration cannot be less than 5 seconds or more than 28 days.`
         )
-        .setColor("#ff1e45");
+        .setColor(red);
       await interaction.reply({ embeds: [embed], ephemeral: true });
       return;
     }
@@ -61,14 +65,14 @@ module.exports = {
         await targetUser.timeout(msDuration, reason);
         const embed = new EmbedBuilder()
           .setDescription(
-            `:white_check_mark: ${targetUser}'s mute duration has been updated to ${prettyMs(
+            `<:TickYes:1215704707432190063> ${targetUser}'s mute duration has been updated to ${prettyMs(
               msDuration,
               {
                 verbose: true,
               }
             )} | ${reason}`
           )
-          .setColor("#2ecc71");
+          .setColor(green);
         await interaction.reply({ embeds: [embed] });
         return;
       }
@@ -76,13 +80,13 @@ module.exports = {
       // Send a DM to the kicked user
       const dmEmbed = new EmbedBuilder()
         .setDescription(
-          `You have been Muted in **${interaction.guild.name}** by **${
-            interaction.user.username
-          }** for **${prettyMs(msDuration, {
+          `<:butterCry:1215371057868054588> You have been Muted in **${
+            interaction.guild.name
+          }** by **${interaction.user.username}** for **${prettyMs(msDuration, {
             verbose: true,
           })}**. \nReason: ${reason}`
         )
-        .setColor("#2ecc71");
+        .setColor(red);
       await targetUser.send({ embeds: [dmEmbed] }).catch((error) => {
         console.error(
           `Failed to send DM to ${targetUser.user.username}: ${error}`
@@ -93,14 +97,14 @@ module.exports = {
       const embed = new EmbedBuilder()
 
         .setDescription(
-          `:white_check_mark: ${targetUser} was muted for ${prettyMs(
+          `<:TickYes:1215704707432190063> ${targetUser} was muted for ${prettyMs(
             msDuration,
             {
               verbose: true,
             }
           )} |  ${reason}`
         )
-        .setColor("#2ecc71");
+        .setColor(green);
       await interaction.reply({ embeds: [embed] });
     } catch (error) {
       console.log(`There was an error when timing out: ${error}`);
@@ -121,8 +125,10 @@ module.exports = {
 
     if (mentionedUser.id === message.author.id) {
       const embed = new EmbedBuilder()
-        .setDescription(`:x: You cannot mute yourself.`)
-        .setColor("#ff1e45");
+        .setDescription(
+          `<:TickNo:1215704449020989500> You cannot mute yourself.`
+        )
+        .setColor(red);
       return message.reply({ embeds: [embed] }).then(deleteRespond);
     }
 
@@ -131,17 +137,19 @@ module.exports = {
     const msDuration = ms(duration);
     if (isNaN(msDuration)) {
       const embed = new EmbedBuilder()
-        .setDescription(`:x: Please provide a valid mute duration.`)
-        .setColor("#ff1e45");
+        .setDescription(
+          `<:TickNo:1215704449020989500> Please provide a valid mute duration.`
+        )
+        .setColor(red);
       return message.reply({ embeds: [embed] }).then(deleteRespond);
     }
 
     if (msDuration < 5000 || msDuration > 2.419e9) {
       const embed = new EmbedBuilder()
         .setDescription(
-          `:x: Mute duration cannot be less than 5 seconds or more than 28 days.`
+          `<:TickNo:1215704449020989500> Mute duration cannot be less than 5 seconds or more than 28 days.`
         )
-        .setColor("#ff1e45");
+        .setColor(red);
       return message.reply({ embeds: [embed] }.then(deleteRespond));
     }
 
@@ -152,26 +160,26 @@ module.exports = {
         await mentionedUser.timeout(msDuration, reason);
         const embed = new EmbedBuilder()
           .setDescription(
-            `:white_check_mark: | ${mentionedUser}'s mute duration has been updated to ${prettyMs(
+            `<:TickYes:1215704707432190063> | ${mentionedUser}'s mute duration has been updated to ${prettyMs(
               msDuration,
               {
                 verbose: true,
               }
             )} | ${reason}`
           )
-          .setColor("#2ecc71");
+          .setColor(green);
         return message.channel.send({ embeds: [embed] });
       }
 
       const dmEmbed = new EmbedBuilder()
         .setDescription(
-          `You have been muted in **${message.guild.name}** by **${
-            message.author.username
-          }** for **${prettyMs(msDuration, {
+          `<:butterCry:1215371057868054588> You have been muted in **${
+            message.guild.name
+          }** by **${message.author.username}** for **${prettyMs(msDuration, {
             verbose: true,
           })}**. \nReason: ${reason}`
         )
-        .setColor("#ff1e45");
+        .setColor(red);
       await mentionedUser.send({ embeds: [dmEmbed] }).catch((error) => {
         console.error(
           `Failed to send DM to ${mentionedUser.user.username}: ${error}`
@@ -181,14 +189,14 @@ module.exports = {
       await mentionedUser.timeout(msDuration, reason);
       const embed = new EmbedBuilder()
         .setDescription(
-          `:white_check_mark: ${mentionedUser} was muted for ${prettyMs(
+          `<:TickYes:1215704707432190063> ${mentionedUser} was muted for ${prettyMs(
             msDuration,
             {
               verbose: true,
             }
           )} | ${reason}`
         )
-        .setColor("#2ecc71");
+        .setColor(green);
       return message.channel.send({ embeds: [embed] });
     } catch (error) {
       console.log(`There was an error when timing out: ${error}`);

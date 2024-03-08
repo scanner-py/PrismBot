@@ -5,6 +5,7 @@ const {
   PermissionFlagsBits,
   EmbedBuilder,
 } = require("discord.js");
+const { red, green } = require("../../../data/colors.json");
 const checkUserPermissions = require("../../utils/checkUserPermissions");
 const checkUserPermissionsPrefixCmd = require("../../utils/checkUserPermissionsPrefixCmd");
 
@@ -16,8 +17,10 @@ module.exports = {
     // check if user is trying to kick himself
     if (mentionable === interaction.user.id) {
       const embed = new EmbedBuilder()
-        .setDescription(`:x: You cannot kick yourself.`)
-        .setColor("#ff1e45");
+        .setDescription(
+          `<:TickNo:1215704449020989500> You cannot kick yourself.`
+        )
+        .setColor(red);
       await interaction.reply({ embeds: [embed], ephemeral: true });
       return;
     }
@@ -31,7 +34,7 @@ module.exports = {
         .setDescription(
           `You have been kicked from **${interaction.guild.name}** by **${interaction.user.username}**. \nReason: ${reason}`
         )
-        .setColor("#2ecc71");
+        .setColor(red);
       await targetUser.send({ embeds: [dmEmbed] }).catch((error) => {
         console.error(
           `Failed to send DM to ${targetUser.user.username}: ${error}`
@@ -41,9 +44,9 @@ module.exports = {
       await targetUser.kick(reason);
       const embed = new EmbedBuilder()
         .setDescription(
-          `:white_check_mark: ${targetUser} was kicked. | ${reason}`
+          `<:TickYes:1215704707432190063> ${targetUser} was kicked. | ${reason}`
         )
-        .setColor("#2ecc71");
+        .setColor(green);
       await interaction.reply({ embeds: [embed] });
       return;
     } catch (error) {
@@ -66,8 +69,10 @@ module.exports = {
 
     if (mentionedUser.id === message.author.id) {
       const embed = new EmbedBuilder()
-        .setDescription(`:x: You cannot kick yourself.`)
-        .setColor("#ff1e45");
+        .setDescription(
+          `<:TickNo:1215704449020989500> You cannot kick yourself.`
+        )
+        .setColor(red);
       return message.channel.send({ embeds: [embed] }).then(deleteRespond);
     }
 
@@ -77,7 +82,7 @@ module.exports = {
         .setDescription(
           `You have been kicked from **${message.guild.name}** by **${message.author.username}**. \nReason: ${reason}`
         )
-        .setColor("#ff1e45");
+        .setColor(red);
       await mentionedUser.send({ embeds: [dmEmbed] }).catch((error) => {
         console.error(
           `Failed to send DM to ${mentionedUser.user.username}: ${error}`
@@ -87,9 +92,9 @@ module.exports = {
       await targetUser.kick(reason);
       const embed = new EmbedBuilder()
         .setDescription(
-          `:white_check_mark: ${targetUser} was kicked. | ${reason}`
+          `<:TickYes:1215704707432190063> ${targetUser} was kicked. | ${reason}`
         )
-        .setColor("#2ecc71");
+        .setColor(green);
       await message.channel.send({ embeds: [embed] });
       return;
     } catch (error) {
