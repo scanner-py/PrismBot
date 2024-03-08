@@ -27,8 +27,7 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setDescription(`:x: | You cannot mute yourself.`)
         .setColor("#ff1e45");
-      await interaction.reply({ embeds: [embed],
-        ephemeral: true });
+      await interaction.reply({ embeds: [embed], ephemeral: true });
       return;
     }
 
@@ -40,8 +39,7 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setDescription(`:x: | Please provide a valid timeout duration.`)
         .setColor("#ff1e45");
-      await interaction.reply({ embeds: [embed],
-        ephemeral: true });
+      await interaction.reply({ embeds: [embed], ephemeral: true });
       return;
     }
 
@@ -51,8 +49,7 @@ module.exports = {
           `:x: | Timeout duration cannot be less than 5 seconds or more than 28 days.`
         )
         .setColor("#ff1e45");
-      await interaction.reply({ embeds: [embed],
-        ephemeral: true });
+      await interaction.reply({ embeds: [embed], ephemeral: true });
       return;
     }
 
@@ -75,6 +72,22 @@ module.exports = {
         await interaction.reply({ embeds: [embed] });
         return;
       }
+
+      // Send a DM to the kicked user
+      const dmEmbed = new EmbedBuilder()
+        .setDescription(
+          `You have been Muted in **${interaction.guild.name}** by **${
+            interaction.user.username
+          }** for **${prettyMs(msDuration, {
+            verbose: true,
+          })}**. \nReason: ${reason}`
+        )
+        .setColor("#2ecc71");
+      await targetUser.send({ embeds: [dmEmbed] }).catch((error) => {
+        console.error(
+          `Failed to send DM to ${targetUser.user.username}: ${error}`
+        );
+      });
 
       await targetUser.timeout(msDuration, reason);
       const embed = new EmbedBuilder()
@@ -149,6 +162,21 @@ module.exports = {
           .setColor("#2ecc71");
         return message.channel.send({ embeds: [embed] });
       }
+
+      const dmEmbed = new EmbedBuilder()
+        .setDescription(
+          `You have been muted in **${message.guild.name}** by **${
+            message.author.username
+          }** for **${prettyMs(msDuration, {
+            verbose: true,
+          })}**. \nReason: ${reason}`
+        )
+        .setColor("#ff1e45");
+      await mentionedUser.send({ embeds: [dmEmbed] }).catch((error) => {
+        console.error(
+          `Failed to send DM to ${mentionedUser.user.username}: ${error}`
+        );
+      });
 
       await mentionedUser.timeout(msDuration, reason);
       const embed = new EmbedBuilder()

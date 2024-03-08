@@ -16,7 +16,7 @@ module.exports = {
     // check if user is trying to kick himself
     if (mentionable === interaction.user.id) {
       const embed = new EmbedBuilder()
-        .setDescription(`:x: | You cannot kick yourself.`)
+        .setDescription(`:x: You cannot kick yourself.`)
         .setColor("#ff1e45");
       await interaction.reply({ embeds: [embed], ephemeral: true });
       return;
@@ -26,10 +26,22 @@ module.exports = {
     if (!targetUser) return;
 
     try {
-      await targetUser.kick(this, reason);
+      // Send a DM to the kicked user
+      const dmEmbed = new EmbedBuilder()
+        .setDescription(
+          `You have been kicked from **${interaction.guild.name}** by **${interaction.user.username}**. \nReason: ${reason}`
+        )
+        .setColor("#2ecc71");
+      await targetUser.send({ embeds: [dmEmbed] }).catch((error) => {
+        console.error(
+          `Failed to send DM to ${targetUser.user.username}: ${error}`
+        );
+      });
+
+      await targetUser.kick(reason);
       const embed = new EmbedBuilder()
         .setDescription(
-          `:white_check_mark: | ${targetUser} has been kicked | ${reason}`
+          `:white_check_mark: ${targetUser} was kicked. | ${reason}`
         )
         .setColor("#2ecc71");
       await interaction.reply({ embeds: [embed] });
@@ -54,17 +66,28 @@ module.exports = {
 
     if (mentionedUser.id === message.author.id) {
       const embed = new EmbedBuilder()
-        .setDescription(`:x: | You cannot kick yourself.`)
+        .setDescription(`:x: You cannot kick yourself.`)
         .setColor("#ff1e45");
       return message.channel.send({ embeds: [embed] }).then(deleteRespond);
     }
 
     if (!targetUser) return;
     try {
-      await targetUser.kick(this, reason);
+      const dmEmbed = new EmbedBuilder()
+        .setDescription(
+          `You have been kicked from **${message.guild.name}** by **${message.author.username}**. \nReason: ${reason}`
+        )
+        .setColor("#ff1e45");
+      await mentionedUser.send({ embeds: [dmEmbed] }).catch((error) => {
+        console.error(
+          `Failed to send DM to ${mentionedUser.user.username}: ${error}`
+        );
+      });
+
+      await targetUser.kick(reason);
       const embed = new EmbedBuilder()
         .setDescription(
-          `:white_check_mark: | ${targetUser} has been kicked | ${reason}`
+          `:white_check_mark: ${targetUser} was kicked. | ${reason}`
         )
         .setColor("#2ecc71");
       await message.channel.send({ embeds: [embed] });
