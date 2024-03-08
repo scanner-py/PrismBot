@@ -25,7 +25,7 @@ module.exports = {
     const reason =
       interaction.options.get("reason")?.value || "No reason provided";
 
-    await interaction.deferReply();
+    // await interaction.deferReply();
     const targetUser = await checkUserPermissions(interaction, mentionable);
     if (!targetUser) return;
     const msDuration = ms(duration);
@@ -33,7 +33,7 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setDescription(`:x: | Please provide a valid timeout duration.`)
         .setColor("#ff1e45");
-      await interaction.editReply({ embeds: [embed] }).then(deleteRespond);
+      await interaction.reply({ embeds: [embed] }).then(deleteRespond);
       return;
     }
 
@@ -43,7 +43,7 @@ module.exports = {
           `:x: | Timeout duration cannot be less than 5 seconds or more than 28 days.`
         )
         .setColor("#ff1e45");
-      await interaction.editReply({ embeds: [embed] }).then(deleteRespond);
+      await interaction.reply({ embeds: [embed] }).then(deleteRespond);
       return;
     }
 
@@ -63,7 +63,7 @@ module.exports = {
             )} | ${reason}`
           )
           .setColor("#2ecc71");
-        await interaction.editReply({ embeds: [embed] });
+        await interaction.reply({ embeds: [embed] });
         return;
       }
 
@@ -79,7 +79,7 @@ module.exports = {
           )} |  ${reason}`
         )
         .setColor("#2ecc71");
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.reply({ embeds: [embed] });
     } catch (error) {
       console.log(`There was an error when timing out: ${error}`);
     }

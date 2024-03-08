@@ -21,12 +21,13 @@ module.exports = async (client, message) => {
 
   if (!command) return;
   const userMessage = message;
+  // delete users cmd
   setTimeout(() => {
     userMessage
       .delete()
       .catch((error) => console.error("Failed to delete message:", error));
-  }, 500); // 5000 milliseconds = 5 seconds
-
+  }, 500); 
+// check if cmd is dev only and usere is developer
   if (command.devOnly) {
     if (!devs.includes(message.author.id)) {
       const embed = new EmbedBuilder()

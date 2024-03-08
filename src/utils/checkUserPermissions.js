@@ -2,15 +2,12 @@ const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 
 module.exports = async (interaction, mentionable) => {
   const targetUser = await interaction.guild.members.fetch(mentionable);
-  const deleteRespond = (msg) => {
-    setTimeout(() => msg.delete(), 5000); // delete the reply after 5 sce
-  };
 
   if (!targetUser) {
     const embed = new EmbedBuilder()
       .setDescription(`:x: | This user doesn't exist in this server.`)
       .setColor("#ff1e45");
-    await interaction.editReply({ embeds: [embed] }).then(deleteRespond);
+    await interaction.reply({ embeds: [embed], ephemeral: true });
     return null;
   }
 
@@ -18,7 +15,7 @@ module.exports = async (interaction, mentionable) => {
     const embed = new EmbedBuilder()
       .setDescription(`:x: | I cannot target bots.`)
       .setColor("#ff1e45");
-    await interaction.editReply({ embeds: [embed]}).then(deleteRespond);
+    await interaction.reply({ embeds: [embed], ephemeral: true });
     // deleteRespond();  Assuming deleteRespond is a function
     return null;
   }
@@ -27,7 +24,7 @@ module.exports = async (interaction, mentionable) => {
     const embed = new EmbedBuilder()
       .setDescription(`:x: | That user is an admin, I can't do that.`)
       .setColor("#ff1e45");
-    await interaction.editReply({ embeds: [embed] }).then(deleteRespond);
+    await interaction.reply({ embeds: [embed], ephemeral: true });
 
     return null;
   }
@@ -42,9 +39,7 @@ module.exports = async (interaction, mentionable) => {
         `:x: | You don't have enough permission to use this command.`
       )
       .setColor("#ff1e45");
-    await interaction
-      .editReply({ embeds: [embed] })
-      .then(deleteRespond);
+    await interaction.reply({ embeds: [embed], ephemeral: true });
     return null;
   }
 
@@ -54,7 +49,7 @@ module.exports = async (interaction, mentionable) => {
         `:x: | The target user has the same or higher role than me, I can't do that.`
       )
       .setColor("#ff1e45");
-    await interaction.editReply({ embeds: [embed] }).then(deleteRespond);
+    await interaction.reply({ embeds: [embed], ephemeral: true });
     return null;
   }
 
