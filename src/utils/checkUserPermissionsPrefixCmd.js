@@ -14,14 +14,14 @@ module.exports = async (message, mentionedUser) => {
     const embed = new EmbedBuilder()
       .setDescription(`<:TickNo:1215704449020989500> Please mention a user.`)
       .setColor(red);
-    return message.reply({ embeds: [embed] }).then(deleteRespond), null;
+    return message.channel.send({ embeds: [embed] }).then(deleteRespond), null;
   }
 
   if (mentionedUser.user.bot) {
     const embed = new EmbedBuilder()
       .setDescription(`<:TickNo:1215704449020989500> I cannot target bots.`)
       .setColor(red);
-    return message.reply({ embeds: [embed] }).then(deleteRespond), null;
+    return message.channel.send({ embeds: [embed] }).then(deleteRespond), null;
   }
 
   if (targetUserRolePosition >= requestUserRolePosition) {
@@ -30,7 +30,7 @@ module.exports = async (message, mentionedUser) => {
         `<:TickNo:1215704449020989500> The target user role position is higher or same as your role position`
       )
       .setColor(red);
-    return message.reply({ embeds: [embed] }).then(deleteRespond), null;
+    return message.channel.send({ embeds: [embed] }).then(deleteRespond), null;
   }
 
   if (targetUserRolePosition >= botRolePosition) {
@@ -39,7 +39,7 @@ module.exports = async (message, mentionedUser) => {
         `<:TickNo:1215704449020989500> The target user has the same or higher role than me, I can't do that.`
       )
       .setColor(red);
-    return message.reply({ embeds: [embed] }).then(deleteRespond), null;
+    return message.channel.send({ embeds: [embed] }).then(deleteRespond), null;
   }
 
   if (mentionedUser.permissions.has(PermissionFlagsBits.Administrator)) {
@@ -48,7 +48,7 @@ module.exports = async (message, mentionedUser) => {
         `<:TickNo:1215704449020989500> That user is an admin, I can't do that.`
       )
       .setColor(red);
-    return message.reply({ embeds: [embed] }).then(deleteRespond), null;
+    return message.channel.send({ embeds: [embed] }).then(deleteRespond), null;
   }
 
   return mentionedUser;

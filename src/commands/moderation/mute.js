@@ -129,7 +129,7 @@ module.exports = {
           `<:TickNo:1215704449020989500> You cannot mute yourself.`
         )
         .setColor(red);
-      return message.reply({ embeds: [embed] }).then(deleteRespond);
+      return message.channel.send({ embeds: [embed] }).then(deleteRespond);
     }
 
     if (!targetUser) return; // If the function returns null, exit the command
@@ -141,7 +141,7 @@ module.exports = {
           `<:TickNo:1215704449020989500> Please provide a valid mute duration.`
         )
         .setColor(red);
-      return message.reply({ embeds: [embed] }).then(deleteRespond);
+      return message.channel.send({ embeds: [embed] }).then(deleteRespond);
     }
 
     if (msDuration < 5000 || msDuration > 2.419e9) {
@@ -150,7 +150,7 @@ module.exports = {
           `<:TickNo:1215704449020989500> Mute duration cannot be less than 5 seconds or more than 28 days.`
         )
         .setColor(red);
-      return message.reply({ embeds: [embed] }.then(deleteRespond));
+      return message.channel.send({ embeds: [embed] }.then(deleteRespond));
     }
 
     try {
