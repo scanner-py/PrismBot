@@ -25,7 +25,7 @@ module.exports = {
   },
 
   run: async (client, message, args) => {
-    message.reply("Loading data....").then(async (msg) => {
+    message.channel.send("Loading data....").then(async (msg) => {
       msg.delete();
       const embed = new EmbedBuilder()
         .setTitle("Pong!")
@@ -36,7 +36,7 @@ module.exports = {
         )
         .setColor("f1c40f")
         .setTimestamp();
-      message.reply({ embeds: [embed] });
+      message.channel.send({ embeds: [embed] });
     });
 
     // message.reply();

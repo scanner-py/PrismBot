@@ -1,5 +1,6 @@
 const { devs, testServer } = require("../../../config.json");
 const getLocalCommands = require("../../utils/getLocalCommands");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = async (client, interaction) => {
   if (!interaction.isChatInputCommand()) return;
@@ -15,8 +16,13 @@ module.exports = async (client, interaction) => {
 
     if (commandObject.devOnly) {
       if (!devs.includes(interaction.member.id)) {
+        const embed = new EmbedBuilder()
+          .setColor("#ff1e45")
+          .setTitle("Access Denied")
+          .setDescription("Only developers are allowed to run this command.");
+
         interaction.reply({
-          content: "Only developers are allowed to run this command.",
+          embeds: [embed],
           ephemeral: true,
         });
         return;

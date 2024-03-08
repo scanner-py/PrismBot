@@ -17,6 +17,9 @@ module.exports = {
    */
 
   callback: async (client, interaction) => {
+    const deleteRespond = (msg) => {
+      setTimeout(() => msg.delete(), 5000); // delete the reply after 5 sce
+    };
     const mentionable = interaction.options.get("user").value;
     const reason =
       interaction.options.get("reason")?.value || "No reason provided";
@@ -24,6 +27,7 @@ module.exports = {
     await interaction.deferReply();
 
     const targetUser = await checkUserPermissions(interaction, mentionable);
+    const username = targetUser.username
     if (!targetUser) return;
 
     try {
@@ -40,53 +44,44 @@ module.exports = {
 
       await targetUser.timeout(null, reason);
       const embed = new EmbedBuilder()
-        .setDescription(` :x:  ${targetUser} is not muted | ${reason}`)
+        .setDescription(` :x: i can't ${targetUser},they aren't muted.`)
         .setColor("#ff1e45");
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed] }).then(deleteRespond);
     } catch (error) {
       console.log(`There was an error when timing out: ${error}`);
     }
   },
   run: async (client, message, args) => {
+    const deleteRespond = (msg) => {
+      setTimeout(() => msg.delete(), 5000); // delete the reply after 5 sce
+    };
+
     const mentionedUser = message.mentions.members.first();
-    const duration = args[1];
-    const reason = args.slice(2).join(" ") || "No reason provided";
+
+    const reason = args.slice(1).join(" ") || "No reason provided";
+    
     const targetUser = await checkUserPermissionsPrefixCmd(
       message,
       mentionedUser
     );
-    if (!targetUser) return; // If the function returns null, exit the command
+
+    if (!targetUser) return; // If the function returns null, exit the command);
 
     try {
-      const { default: prettyMs } = await import("pretty-ms");
-
       if (mentionedUser.isCommunicationDisabled()) {
         await mentionedUser.timeout(null, reason);
         const embed = new EmbedBuilder()
           .setDescription(
-            `:white_check_mark: | ${mentionedUser}'s timeout has been updated to ${prettyMs(
-              msDuration,
-              {
-                verbose: true,
-              }
-            )} | ${reason}`
+            `:white_check_mark: ${targetUser}'s mute has been removed | ${reason}`
           )
           .setColor("#2ecc71");
-        return message.reply({ embeds: [embed] });
+        return message.channel.send({ embeds: [embed] });
       }
-
-      await mentionedUser.timeout(null, reason);
+      mentionedUser.timeout(null, reason);
       const embed = new EmbedBuilder()
-        .setDescription(
-          `:white_check_mark: | ${mentionedUser} was timed out for ${prettyMs(
-            msDuration,
-            {
-              verbose: true,
-            }
-          )} | ${reason}`
-        )
-        .setColor("#2ecc71");
-      return message.reply({ embeds: [embed] });
+        .setDescription(` :x: i can't ${targetUser},they aren't muted.`)
+        .setColor("#ff1e45");
+      return message.channel.send({ embeds: [embed] }).then(deleteRespond);
     } catch (error) {
       console.log(`There was an error when timing out: ${error}`);
     }

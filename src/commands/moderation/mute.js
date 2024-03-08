@@ -17,6 +17,9 @@ module.exports = {
    */
 
   callback: async (client, interaction) => {
+    const deleteRespond = (msg) => {
+      setTimeout(() => msg.delete(), 5000); // delete the reply after 5 sce
+    };
     const mentionable = interaction.options.get("user").value;
     const duration = interaction.options.get("duration").value; // 1d, 1 day, 1s 5s, 5m
     const reason =
@@ -25,13 +28,12 @@ module.exports = {
     await interaction.deferReply();
     const targetUser = await checkUserPermissions(interaction, mentionable);
     if (!targetUser) return;
-
     const msDuration = ms(duration);
     if (isNaN(msDuration)) {
       const embed = new EmbedBuilder()
         .setDescription(`:x: | Please provide a valid timeout duration.`)
         .setColor("#ff1e45");
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed] }).then(deleteRespond);
       return;
     }
 
@@ -41,7 +43,7 @@ module.exports = {
           `:x: | Timeout duration cannot be less than 5 seconds or more than 28 days.`
         )
         .setColor("#ff1e45");
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed] }).then(deleteRespond);
       return;
     }
 
@@ -67,6 +69,7 @@ module.exports = {
 
       await targetUser.timeout(msDuration, reason);
       const embed = new EmbedBuilder()
+
         .setDescription(
           `:white_check_mark: | ${targetUser} was timed out for ${prettyMs(
             msDuration,
@@ -83,6 +86,9 @@ module.exports = {
   },
 
   run: async (client, message, args) => {
+    const deleteRespond = (msg) => {
+      setTimeout(() => msg.delete(), 5000); // delete the reply after 5 sce
+    };
     const mentionedUser = message.mentions.members.first();
     const duration = args[1];
     const reason = args.slice(2).join(" ") || "No reason provided";
@@ -97,7 +103,7 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setDescription(`:x: | Please provide a valid timeout duration.`)
         .setColor("#ff1e45");
-      return message.reply({ embeds: [embed] });
+      return message.reply({ embeds: [embed] }).then(deleteRespond);
     }
 
     if (msDuration < 5000 || msDuration > 2.419e9) {
@@ -106,7 +112,7 @@ module.exports = {
           `:x: | Timeout duration cannot be less than 5 seconds or more than 28 days.`
         )
         .setColor("#ff1e45");
-      return message.reply({ embeds: [embed] });
+      return message.reply({ embeds: [embed] }.then(deleteRespond));
     }
 
     try {
@@ -116,7 +122,7 @@ module.exports = {
         await mentionedUser.timeout(msDuration, reason);
         const embed = new EmbedBuilder()
           .setDescription(
-            `:white_check_mark: | ${mentionedUser}'s timeout has been updated to ${prettyMs(
+            `:white_check_mark: | ${mentionedUser}'s mute has extended to ${prettyMs(
               msDuration,
               {
                 verbose: true,
@@ -124,13 +130,13 @@ module.exports = {
             )} | ${reason}`
           )
           .setColor("#2ecc71");
-        return message.reply({ embeds: [embed] });
+        return message.channel.send({ embeds: [embed] });
       }
 
       await mentionedUser.timeout(msDuration, reason);
       const embed = new EmbedBuilder()
         .setDescription(
-          `:white_check_mark: | ${mentionedUser} was timed out for ${prettyMs(
+          `:white_check_mark: | ${mentionedUser} has been muted for ${prettyMs(
             msDuration,
             {
               verbose: true,
@@ -138,7 +144,7 @@ module.exports = {
           )} | ${reason}`
         )
         .setColor("#2ecc71");
-      return message.reply({ embeds: [embed] });
+      return message.channel.send({ embeds: [embed] });
     } catch (error) {
       console.log(`There was an error when timing out: ${error}`);
     }
