@@ -122,16 +122,6 @@ module.exports = {
       message,
       mentionedUser
     );
-
-    if (mentionedUser.id === message.author.id) {
-      const embed = new EmbedBuilder()
-        .setDescription(
-          `<:TickNo:1215704449020989500> You cannot mute yourself.`
-        )
-        .setColor(red);
-      return message.channel.send({ embeds: [embed] }).then(deleteRespond);
-    }
-
     if (!targetUser) return; // If the function returns null, exit the command
 
     const msDuration = ms(duration);

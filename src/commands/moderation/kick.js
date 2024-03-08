@@ -14,16 +14,6 @@ module.exports = {
     const mentionable = interaction.options.get("user").value; // target user
     const reason =
       interaction.options.get("reason")?.value || "No reason provided"; // reason
-    // check if user is trying to kick himself
-    if (mentionable === interaction.user.id) {
-      const embed = new EmbedBuilder()
-        .setDescription(
-          `<:TickNo:1215704449020989500> You cannot kick yourself.`
-        )
-        .setColor(red);
-      await interaction.reply({ embeds: [embed], ephemeral: true });
-      return;
-    }
 
     const targetUser = await checkUserPermissions(interaction, mentionable);
     if (!targetUser) return;
@@ -66,15 +56,6 @@ module.exports = {
       message,
       mentionedUser
     );
-
-    if (mentionedUser.id === message.author.id) {
-      const embed = new EmbedBuilder()
-        .setDescription(
-          `<:TickNo:1215704449020989500> You cannot kick yourself.`
-        )
-        .setColor(red);
-      return message.channel.send({ embeds: [embed] }).then(deleteRespond);
-    }
 
     if (!targetUser) return;
     try {

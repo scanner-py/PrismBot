@@ -3,7 +3,10 @@ const { red } = require("../../data/colors.json");
 
 module.exports = async (interaction, mentionable) => {
   const targetUser = await interaction.guild.members.fetch(mentionable);
-
+  const localCommands = getLocalCommands();
+  const commandObject = localCommands.find(
+    (cmd) => cmd.name === interaction.commandName
+  );
   if (!targetUser) {
     const embed = new EmbedBuilder()
       .setDescription(
@@ -11,6 +14,16 @@ module.exports = async (interaction, mentionable) => {
       )
       .setColor(red);
     await interaction.reply({ embeds: [embed], ephemeral: true });
+    return null;
+  }
+
+  if (mentionable === interaction.user.id) {
+    const embed = new EmbedBuilder()
+      .setDescription(
+        `<:TickNo:1215704449020989500> You cannot ${commandObject.name} yourself.`
+      )
+      .setColor(red);
+    interaction.reply({ embeds: [embed] });
     return null;
   }
 

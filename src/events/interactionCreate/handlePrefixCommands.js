@@ -1,12 +1,24 @@
 const { prefix, devs, testServer } = require("../../../config.json");
 const getLocalCommands = require("../../utils/getLocalCommands");
 const { EmbedBuilder } = require("discord.js");
-const { red } = require("../../../data/colors.json");
+const { red, butter } = require("../../../data/colors.json");
 
 module.exports = async (client, message) => {
   const deleteRespond = (msg) => {
     setTimeout(() => msg.delete(), 5000); // delete the reply after 5 sce
   };
+  ;
+
+  // Check if the bot is pinged
+  if (message.content === `<@${client.user.id}>`) {
+    const embed = new EmbedBuilder()
+      .setDescription(
+        `My prefix is \`${prefix}\`. Type \`${prefix}help\` to see my commands.`
+      )
+      .setColor(butter);
+    return message.reply({ embeds: [embed] });
+  }
+
   if (
     !message.content ||
     !message.content.startsWith(prefix) ||
@@ -33,7 +45,9 @@ module.exports = async (client, message) => {
     if (!devs.includes(message.author.id)) {
       const embed = new EmbedBuilder()
         .setTitle("Access Denied")
-        .setDescription(`<:TickNo:1215704449020989500> Only developers are allowed to run this command.`)
+        .setDescription(
+          `<:TickNo:1215704449020989500> Only developers are allowed to run this command.`
+        )
         .setColor(red);
       return message.channel.send({ embeds: [embed] }).then(deleteRespond);
     }
@@ -43,7 +57,9 @@ module.exports = async (client, message) => {
     if (!(message.guild.id === testServer)) {
       const embed = new EmbedBuilder()
         .setTitle("Access Denied")
-        .setDescription(`<:TickNo:1215704449020989500> This command cannot be run here.`)
+        .setDescription(
+          `<:TickNo:1215704449020989500> This command cannot be run here.`
+        )
         .setColor(red);
       return message.channel.send({ embeds: [embed] }).then(deleteRespond);
     }
@@ -54,7 +70,9 @@ module.exports = async (client, message) => {
       if (!message.member.permissions.has(permission)) {
         const embed = new EmbedBuilder()
           .setTitle("Access Denied")
-          .setDescription(`<:TickNo:1215704449020989500> you donot have enough permissions.`)
+          .setDescription(
+            `<:TickNo:1215704449020989500> you donot have enough permissions.`
+          )
           .setColor(red);
         return message.channel.send({ embeds: [embed] }).then(deleteRespond);
       }
@@ -66,7 +84,9 @@ module.exports = async (client, message) => {
       const bot = message.guild.members.me;
       if (!bot.permissions.has(permission)) {
         const embed = new EmbedBuilder()
-          .setDescription(`<:TickNo:1215704449020989500> i dont have enough permissions`)
+          .setDescription(
+            `<:TickNo:1215704449020989500> i dont have enough permissions`
+          )
           .setColor(red);
         return message.channel.send({ embeds: [embed] }).then(deleteRespond);
       }
