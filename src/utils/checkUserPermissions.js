@@ -5,7 +5,7 @@ module.exports = async (interaction, mentionable) => {
 
   if (!targetUser) {
     const embed = new EmbedBuilder()
-      .setDescription(`:x: | This user doesn't exist in this server.`)
+      .setDescription(`:x: This user doesn't exist in this server.`)
       .setColor("#ff1e45");
     await interaction.reply({ embeds: [embed], ephemeral: true });
     return null;
@@ -13,7 +13,7 @@ module.exports = async (interaction, mentionable) => {
 
   if (targetUser.user.bot) {
     const embed = new EmbedBuilder()
-      .setDescription(`:x: | I cannot target bots.`)
+      .setDescription(`:x: I cannot target bots.`)
       .setColor("#ff1e45");
     await interaction.reply({ embeds: [embed], ephemeral: true });
     return null;
@@ -21,7 +21,7 @@ module.exports = async (interaction, mentionable) => {
 
   if (targetUser.permissions.has(PermissionFlagsBits.Administrator)) {
     const embed = new EmbedBuilder()
-      .setDescription(`:x: | That user is an admin, I can't do that.`)
+      .setDescription(`:x: That user is an admin, I can't do that.`)
       .setColor("#ff1e45");
     await interaction.reply({ embeds: [embed], ephemeral: true });
 
@@ -35,7 +35,7 @@ module.exports = async (interaction, mentionable) => {
   if (targetUserRolePosition >= requestUserRolePosition) {
     const embed = new EmbedBuilder()
       .setDescription(
-        `:x: | You don't have enough permission to use this command.`
+        `:x: the target user role position is higher or same as your role position`
       )
       .setColor("#ff1e45");
     await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -45,7 +45,7 @@ module.exports = async (interaction, mentionable) => {
   if (targetUserRolePosition >= botRolePosition) {
     const embed = new EmbedBuilder()
       .setDescription(
-        `:x: | The target user has the same or higher role than me, I can't do that.`
+        `:x: The target user has the same or higher role than me, I can't do that.`
       )
       .setColor("#ff1e45");
     await interaction.reply({ embeds: [embed], ephemeral: true });

@@ -50,7 +50,7 @@ module.exports = async (client, message) => {
     for (const permission of command.permissionsRequired) {
       if (!message.member.permissions.has(permission)) {
         const embed = new EmbedBuilder()
-          .setDescription(`:x: Not enough permissions`)
+          .setDescription(`:x: you donot have enough permissions.`)
           .setColor("#ff1e45");
         return message.channel.send({ embeds: [embed] }).then(deleteRespond);
       }
