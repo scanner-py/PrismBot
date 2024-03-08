@@ -16,7 +16,6 @@ module.exports = async (interaction, mentionable) => {
       .setDescription(`:x: | I cannot target bots.`)
       .setColor("#ff1e45");
     await interaction.reply({ embeds: [embed], ephemeral: true });
-    // deleteRespond();  Assuming deleteRespond is a function
     return null;
   }
 
