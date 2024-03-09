@@ -7,11 +7,7 @@ const chalk = require("chalk");
 module.exports = async (client) => {
   try {
     const localCommands = getLocalCommands();
-    const applicationCommands = await getApplicationCommands(
-      client
-      // testServer this registers commands test only
-    );
-
+    const applicationCommands = await getApplicationCommands(client);
     for (const localCommand of localCommands) {
       const { name, description, options } = localCommand;
 

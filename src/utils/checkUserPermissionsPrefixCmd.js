@@ -20,21 +20,21 @@ module.exports = async (message, mentionedUser) => {
 
   if (!mentionedUser) {
     const embed = new EmbedBuilder()
-      .setDescription(`<:TickNo:1215704449020989500> Please mention a user.`)
+      .setDescription(`<:No:1215704504180146277> Please mention a user.`)
       .setColor(red);
     return message.channel.send({ embeds: [embed] }).then(deleteRespond), null;
   }
   if (mentionedUser.id === message.author.id) {
     const embed = new EmbedBuilder()
       .setDescription(
-        `<:TickNo:1215704449020989500> You cannot ${command.name} yourself.`
+        `<:No:1215704504180146277> You cannot ${command.name} yourself.`
       )
       .setColor(red);
     return message.channel.send({ embeds: [embed] }).then(deleteRespond);
   }
   if (mentionedUser.user.bot) {
     const embed = new EmbedBuilder()
-      .setDescription(`<:TickNo:1215704449020989500> I cannot target bots.`)
+      .setDescription(`<:No:1215704504180146277> I cannot target bots.`)
       .setColor(red);
     return message.channel.send({ embeds: [embed] }).then(deleteRespond), null;
   }
@@ -42,7 +42,7 @@ module.exports = async (message, mentionedUser) => {
   if (mentionedUser.permissions.has(PermissionFlagsBits.Administrator)) {
     const embed = new EmbedBuilder()
       .setDescription(
-        `<:TickNo:1215704449020989500> That user is an admin, I can't do that.`
+        `<:No:1215704504180146277> That user is an admin, I can't do that.`
       )
       .setColor(red);
     return message.channel.send({ embeds: [embed] }).then(deleteRespond), null;
@@ -51,7 +51,7 @@ module.exports = async (message, mentionedUser) => {
   if (targetUserRolePosition >= requestUserRolePosition) {
     const embed = new EmbedBuilder()
       .setDescription(
-        `<:TickNo:1215704449020989500> The target user role position is higher or same as your role position`
+        `<:No:1215704504180146277> The target user role position is higher or same as your role position`
       )
       .setColor(red);
     return message.channel.send({ embeds: [embed] }).then(deleteRespond), null;
@@ -60,7 +60,7 @@ module.exports = async (message, mentionedUser) => {
   if (targetUserRolePosition >= botRolePosition) {
     const embed = new EmbedBuilder()
       .setDescription(
-        `<:TickNo:1215704449020989500> The target user has the same or higher role than me, I can't do that.`
+        `<:No:1215704504180146277> The target user has the same or higher role than me, I can't do that.`
       )
       .setColor(red);
     return message.channel.send({ embeds: [embed] }).then(deleteRespond), null;

@@ -25,8 +25,6 @@ module.exports = {
     const reason =
       interaction.options.get("reason")?.value || "No reason provided";
 
-    await interaction.deferReply();
-
     const targetUser = await checkUserPermissions(interaction, mentionable);
     if (!targetUser) return;
 
@@ -35,20 +33,20 @@ module.exports = {
         await targetUser.timeout(null, reason);
         const embed = new EmbedBuilder()
           .setDescription(
-            `<:TickYes:1215704707432190063> ${targetUser} was unmuted | ${reason}`
+            `<:right:1216014282957918259> ${targetUser} was unmuted | ${reason}`
           )
           .setColor(green);
-        await interaction.editReply({ embeds: [embed] });
+        await interaction.reply({ embeds: [embed] });
         return;
       }
 
       await targetUser.timeout(null, reason);
       const embed = new EmbedBuilder()
         .setDescription(
-          ` <:TickNo:1215704449020989500> i can't ${targetUser},they aren't muted.`
+          ` <:No:1215704504180146277> i can't ${targetUser},they aren't muted.`
         )
         .setColor(red);
-      await interaction.editReply({ embeds: [embed] }).then(deleteRespond);
+      await interaction.reply({ embeds: [embed] }).then(deleteRespond);
     } catch (error) {
       console.log(`There was an error when timing out: ${error}`);
     }
@@ -74,7 +72,7 @@ module.exports = {
         await mentionedUser.timeout(null, reason);
         const embed = new EmbedBuilder()
           .setDescription(
-            `<:TickYes:1215704707432190063> ${targetUser} was unmuted | ${reason}`
+            `<:right:1216014282957918259> ${targetUser} was unmuted | ${reason}`
           )
           .setColor(green);
         return message.channel.send({ embeds: [embed] });
@@ -82,7 +80,7 @@ module.exports = {
       mentionedUser.timeout(null, reason);
       const embed = new EmbedBuilder()
         .setDescription(
-          ` <:TickNo:1215704449020989500> i can't ${targetUser},they aren't muted.`
+          ` <:No:1215704504180146277> i can't ${targetUser},they aren't muted.`
         )
         .setColor(red);
       return message.channel.send({ embeds: [embed] }).then(deleteRespond);
@@ -92,8 +90,7 @@ module.exports = {
   },
 
   name: "unmute",
-  description: "Mute a user.",
-  deleted: false,
+  description: "Unmuute a user.",
   options: [
     {
       name: "user",

@@ -12,7 +12,7 @@ module.exports = {
   callback: (client, interaction) => {
     const embed = new EmbedBuilder()
       .setDescription(
-        `<:TickNo:1215704449020989500> Sorry, but I cannot help you right now.`
+        `<:No:1215704504180146277> Sorry, but I cannot help you right now.`
       )
       .setColor(transparent);
     return interaction.reply({ embeds: [embed], ephemeral: true });
@@ -23,7 +23,7 @@ module.exports = {
     };
     const embed = new EmbedBuilder()
       .setDescription(
-        `<:TickNo:1215704449020989500> Sorry, but I cannot help you right now.`
+        `<:No:1215704504180146277> Sorry, but I cannot help you right now.`
       )
       .setColor(transparent);
     try {

@@ -25,9 +25,7 @@ module.exports = {
     // Check if the user is trying to mute themselves
     if (mentionable === interaction.user.id) {
       const embed = new EmbedBuilder()
-        .setDescription(
-          `<:TickNo:1215704449020989500> You cannot mute yourself.`
-        )
+        .setDescription(`<:No:1215704504180146277> You cannot mute yourself.`)
         .setColor(red);
       await interaction.reply({ embeds: [embed], ephemeral: true });
       return;
@@ -40,7 +38,7 @@ module.exports = {
     if (isNaN(msDuration)) {
       const embed = new EmbedBuilder()
         .setDescription(
-          `<:TickNo:1215704449020989500> Please provide a valid mute duration.`
+          `<:No:1215704504180146277> Please provide a valid mute duration.`
         )
         .setColor(red);
       await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -50,7 +48,7 @@ module.exports = {
     if (msDuration < 5000 || msDuration > 2.419e9) {
       const embed = new EmbedBuilder()
         .setDescription(
-          `<:TickNo:1215704449020989500> Mute duration cannot be less than 5 seconds or more than 28 days.`
+          `<:No:1215704504180146277> Mute duration cannot be less than 5 seconds or more than 28 days.`
         )
         .setColor(red);
       await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -65,7 +63,7 @@ module.exports = {
         await targetUser.timeout(msDuration, reason);
         const embed = new EmbedBuilder()
           .setDescription(
-            `<:TickYes:1215704707432190063> ${targetUser}'s mute duration has been updated to ${prettyMs(
+            `<:right:1216014282957918259> ${targetUser}'s mute duration has been updated to ${prettyMs(
               msDuration,
               {
                 verbose: true,
@@ -80,7 +78,7 @@ module.exports = {
       // Send a DM to the kicked user
       const dmEmbed = new EmbedBuilder()
         .setDescription(
-          `<:transparentCry:1215371057868054588> You have been Muted in **${
+          `You have been Muted in **${
             interaction.guild.name
           }** by **${interaction.user.username}** for **${prettyMs(msDuration, {
             verbose: true,
@@ -97,7 +95,7 @@ module.exports = {
       const embed = new EmbedBuilder()
 
         .setDescription(
-          `<:TickYes:1215704707432190063> ${targetUser} was muted for ${prettyMs(
+          `<:right:1216014282957918259> ${targetUser} was muted for ${prettyMs(
             msDuration,
             {
               verbose: true,
@@ -128,7 +126,7 @@ module.exports = {
     if (isNaN(msDuration)) {
       const embed = new EmbedBuilder()
         .setDescription(
-          `<:TickNo:1215704449020989500> Please provide a valid mute duration.`
+          `<:No:1215704504180146277> Please provide a valid mute duration.`
         )
         .setColor(red);
       return message.channel.send({ embeds: [embed] }).then(deleteRespond);
@@ -137,7 +135,7 @@ module.exports = {
     if (msDuration < 5000 || msDuration > 2.419e9) {
       const embed = new EmbedBuilder()
         .setDescription(
-          `<:TickNo:1215704449020989500> Mute duration cannot be less than 5 seconds or more than 28 days.`
+          `<:No:1215704504180146277> Mute duration cannot be less than 5 seconds or more than 28 days.`
         )
         .setColor(red);
       return message.channel.send({ embeds: [embed] }.then(deleteRespond));
@@ -150,7 +148,7 @@ module.exports = {
         await mentionedUser.timeout(msDuration, reason);
         const embed = new EmbedBuilder()
           .setDescription(
-            `<:TickYes:1215704707432190063> | ${mentionedUser}'s mute duration has been updated to ${prettyMs(
+            `<:right:1216014282957918259> | ${mentionedUser}'s mute duration has been updated to ${prettyMs(
               msDuration,
               {
                 verbose: true,
@@ -163,7 +161,7 @@ module.exports = {
 
       const dmEmbed = new EmbedBuilder()
         .setDescription(
-          `<:transparentCry:1215371057868054588> You have been muted in **${
+          `You have been muted in **${
             message.guild.name
           }** by **${message.author.username}** for **${prettyMs(msDuration, {
             verbose: true,
@@ -179,7 +177,7 @@ module.exports = {
       await mentionedUser.timeout(msDuration, reason);
       const embed = new EmbedBuilder()
         .setDescription(
-          `<:TickYes:1215704707432190063> ${mentionedUser} was muted for ${prettyMs(
+          `<:right:1216014282957918259> ${mentionedUser} was muted for ${prettyMs(
             msDuration,
             {
               verbose: true,
@@ -195,7 +193,6 @@ module.exports = {
 
   name: "mute",
   description: "Mute a user.",
-  deleted: false,
   options: [
     {
       name: "user",

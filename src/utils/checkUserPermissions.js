@@ -1,5 +1,6 @@
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const { red } = require("../../data/colors.json");
+const getLocalCommands = require("./getLocalCommands");
 
 module.exports = async (interaction, mentionable) => {
   const targetUser = await interaction.guild.members.fetch(mentionable);
@@ -10,7 +11,7 @@ module.exports = async (interaction, mentionable) => {
   if (!targetUser) {
     const embed = new EmbedBuilder()
       .setDescription(
-        `<:TickNo:1215704449020989500> This user doesn't exist in this server.`
+        `<:No:1215704504180146277> This user doesn't exist in this server.`
       )
       .setColor(red);
     await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -20,16 +21,16 @@ module.exports = async (interaction, mentionable) => {
   if (mentionable === interaction.user.id) {
     const embed = new EmbedBuilder()
       .setDescription(
-        `<:TickNo:1215704449020989500> You cannot ${commandObject.name} yourself.`
+        `<:No:1215704504180146277> You cannot ${commandObject.name} yourself.`
       )
       .setColor(red);
-    interaction.reply({ embeds: [embed] });
+    interaction.reply({ embeds: [embed], ephemeral: true });
     return null;
   }
 
   if (targetUser.user.bot) {
     const embed = new EmbedBuilder()
-      .setDescription(`<:TickNo:1215704449020989500> I cannot target bots.`)
+      .setDescription(`<:No:1215704504180146277> I cannot target bots.`)
       .setColor(red);
     await interaction.reply({ embeds: [embed], ephemeral: true });
     return null;
@@ -38,7 +39,7 @@ module.exports = async (interaction, mentionable) => {
   if (targetUser.permissions.has(PermissionFlagsBits.Administrator)) {
     const embed = new EmbedBuilder()
       .setDescription(
-        `<:TickNo:1215704449020989500> That user is an admin, I can't do that.`
+        `<:No:1215704504180146277> That user is an admin, I can't do that.`
       )
       .setColor(red);
     await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -53,7 +54,7 @@ module.exports = async (interaction, mentionable) => {
   if (targetUserRolePosition >= requestUserRolePosition) {
     const embed = new EmbedBuilder()
       .setDescription(
-        `<:TickNo:1215704449020989500> the target user role position is higher or same as your role position`
+        `<:No:1215704504180146277> the target user role position is higher or same as your role position`
       )
       .setColor(red);
     await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -63,7 +64,7 @@ module.exports = async (interaction, mentionable) => {
   if (targetUserRolePosition >= botRolePosition) {
     const embed = new EmbedBuilder()
       .setDescription(
-        `<:TickNo:1215704449020989500> The target user has the same or higher role than me, I can't do that.`
+        `<:No:1215704504180146277> The target user has the same or higher role than me, I can't do that.`
       )
       .setColor(red);
     await interaction.reply({ embeds: [embed], ephemeral: true });

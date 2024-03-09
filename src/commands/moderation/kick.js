@@ -34,7 +34,7 @@ module.exports = {
       await targetUser.kick(reason);
       const embed = new EmbedBuilder()
         .setDescription(
-          `<:TickYes:1215704707432190063> ${targetUser} was kicked. | ${reason}`
+          `<:right:1216014282957918259> ${targetUser} was kicked. | ${reason}`
         )
         .setColor(green);
       await interaction.reply({ embeds: [embed] });
@@ -73,7 +73,7 @@ module.exports = {
       await targetUser.kick(reason);
       const embed = new EmbedBuilder()
         .setDescription(
-          `<:TickYes:1215704707432190063> ${targetUser} was kicked. | ${reason}`
+          `<:right:1216014282957918259> ${targetUser} was kicked. | ${reason}`
         )
         .setColor(green);
       await message.channel.send({ embeds: [embed] });
@@ -84,7 +84,6 @@ module.exports = {
   },
   name: "kick",
   description: "kick a user.",
-  deleted: false,
   options: [
     {
       name: "user",

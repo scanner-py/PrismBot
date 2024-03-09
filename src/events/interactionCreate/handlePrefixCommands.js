@@ -44,7 +44,7 @@ module.exports = async (client, message) => {
       const embed = new EmbedBuilder()
         .setTitle("Access Denied")
         .setDescription(
-          `<:TickNo:1215704449020989500> Only developers are allowed to run this command.`
+          `<:No:1215704504180146277> Only developers are allowed to run this command.`
         )
         .setColor(red);
       return message.channel.send({ embeds: [embed] }).then(deleteRespond);
@@ -56,7 +56,7 @@ module.exports = async (client, message) => {
       const embed = new EmbedBuilder()
         .setTitle("Access Denied")
         .setDescription(
-          `<:TickNo:1215704449020989500> This command cannot be run here.`
+          `<:No:1215704504180146277> This command cannot be run here.`
         )
         .setColor(red);
       return message.channel.send({ embeds: [embed] }).then(deleteRespond);
@@ -69,7 +69,7 @@ module.exports = async (client, message) => {
         const embed = new EmbedBuilder()
           .setTitle("Access Denied")
           .setDescription(
-            `<:TickNo:1215704449020989500> you donot have enough permissions.`
+            `<:No:1215704504180146277> you donot have enough permissions.`
           )
           .setColor(red);
         return message.channel.send({ embeds: [embed] }).then(deleteRespond);
@@ -83,7 +83,7 @@ module.exports = async (client, message) => {
       if (!bot.permissions.has(permission)) {
         const embed = new EmbedBuilder()
           .setDescription(
-            `<:TickNo:1215704449020989500> i dont have enough permissions`
+            `<:No:1215704504180146277> i dont have enough permissions`
           )
           .setColor(red);
         return message.channel.send({ embeds: [embed] }).then(deleteRespond);
