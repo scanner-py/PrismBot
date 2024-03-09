@@ -80,7 +80,7 @@ module.exports = {
       // Send a DM to the kicked user
       const dmEmbed = new EmbedBuilder()
         .setDescription(
-          `<:butterCry:1215371057868054588> You have been Muted in **${
+          `<:transparentCry:1215371057868054588> You have been Muted in **${
             interaction.guild.name
           }** by **${interaction.user.username}** for **${prettyMs(msDuration, {
             verbose: true,
@@ -163,7 +163,7 @@ module.exports = {
 
       const dmEmbed = new EmbedBuilder()
         .setDescription(
-          `<:butterCry:1215371057868054588> You have been muted in **${
+          `<:transparentCry:1215371057868054588> You have been muted in **${
             message.guild.name
           }** by **${message.author.username}** for **${prettyMs(msDuration, {
             verbose: true,

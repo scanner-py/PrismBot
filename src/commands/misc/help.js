@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
-const { butter } = require("../../../data/colors.json");
+const { transparent } = require("../../../data/colors.json");
 module.exports = {
   // options: [{}],
   // deleted: false,
@@ -13,7 +13,7 @@ module.exports = {
       .setDescription(
         `<:TickNo:1215704449020989500> Sorry, but I cannot help you right now.`
       )
-      .setColor(butter);
+      .setColor(transparent);
     return interaction.reply({ embeds: [embed], ephemeral: true });
   },
   run: async (client, message, args) => {
@@ -24,7 +24,7 @@ module.exports = {
       .setDescription(
         `<:TickNo:1215704449020989500> Sorry, but I cannot help you right now.`
       )
-      .setColor(butter);
+      .setColor(transparent);
     try {
       await message.author.send({ embeds: [embed] });
       await message.channel

@@ -1,21 +1,19 @@
 const { prefix, devs, testServer } = require("../../../config.json");
 const getLocalCommands = require("../../utils/getLocalCommands");
 const { EmbedBuilder } = require("discord.js");
-const { red, butter } = require("../../../data/colors.json");
+const { red, transparent } = require("../../../data/colors.json");
 
 module.exports = async (client, message) => {
   const deleteRespond = (msg) => {
     setTimeout(() => msg.delete(), 5000); // delete the reply after 5 sce
   };
-  ;
-
   // Check if the bot is pinged
   if (message.content === `<@${client.user.id}>`) {
     const embed = new EmbedBuilder()
       .setDescription(
         `My prefix is \`${prefix}\`. Type \`${prefix}help\` to see my commands.`
       )
-      .setColor(butter);
+      .setColor(transparent);
     return message.reply({ embeds: [embed] });
   }
 
