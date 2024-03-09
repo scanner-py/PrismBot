@@ -93,6 +93,7 @@ module.exports = {
 
   name: "unmute",
   description: "Mute a user.",
+  deleted: false,
   options: [
     {
       name: "user",

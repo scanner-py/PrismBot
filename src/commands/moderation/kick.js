@@ -84,6 +84,7 @@ module.exports = {
   },
   name: "kick",
   description: "kick a user.",
+  deleted: false,
   options: [
     {
       name: "user",

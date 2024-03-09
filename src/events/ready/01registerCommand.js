@@ -8,8 +8,8 @@ module.exports = async (client) => {
   try {
     const localCommands = getLocalCommands();
     const applicationCommands = await getApplicationCommands(
-      client,
-      testServer
+      client
+      // testServer this registers commands test only
     );
 
     for (const localCommand of localCommands) {

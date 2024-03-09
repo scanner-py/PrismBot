@@ -7,6 +7,7 @@ module.exports = {
   // testOnly: true,
   name: "help",
   description: "need help?",
+  deleted: false,
 
   callback: (client, interaction) => {
     const embed = new EmbedBuilder()

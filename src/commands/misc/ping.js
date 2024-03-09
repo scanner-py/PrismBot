@@ -5,6 +5,7 @@ const { transparent } = require("../../../data/colors.json");
 module.exports = {
   name: "ping",
   description: "Check the bot ping",
+  deleted: false,
 
   callback: async (client, interaction) => {
     await interaction.deferReply();

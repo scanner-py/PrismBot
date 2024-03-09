@@ -5,6 +5,7 @@ module.exports = {
   name: "stats",
   description: "bot statistics",
   devOnly: true,
+  deleted: false,
 
   callback: async (client, interaction) => {
     await interaction.deferReply();
