@@ -17,20 +17,19 @@ module.exports = {
 
     const targetUser = await checkUserPermissions(interaction, mentionable);
     if (!targetUser) return;
+    // Send a DM to the kicked user
+    const dmEmbed = new EmbedBuilder()
+      .setDescription(
+        `You have been kicked from **${interaction.guild.name}** by **${interaction.user.username}**. \nReason: ${reason}`
+      )
+      .setColor(red);
+    await targetUser.send({ embeds: [dmEmbed] }).catch((error) => {
+      console.error(
+        `Failed to send DM to ${targetUser.user.username}: ${error}`
+      );
+    });
 
     try {
-      // Send a DM to the kicked user
-      const dmEmbed = new EmbedBuilder()
-        .setDescription(
-          `You have been kicked from **${interaction.guild.name}** by **${interaction.user.username}**. \nReason: ${reason}`
-        )
-        .setColor(red);
-      await targetUser.send({ embeds: [dmEmbed] }).catch((error) => {
-        console.error(
-          `Failed to send DM to ${targetUser.user.username}: ${error}`
-        );
-      });
-
       await targetUser.kick(reason);
       const embed = new EmbedBuilder()
         .setDescription(
