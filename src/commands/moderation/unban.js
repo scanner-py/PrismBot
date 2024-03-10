@@ -66,7 +66,7 @@ module.exports = {
     }
   },
   name: "unban",
-  description: "ban a user.",
+  description: "unban a user.",
   options: [
     {
       name: "user",

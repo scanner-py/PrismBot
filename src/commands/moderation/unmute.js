@@ -90,7 +90,7 @@ module.exports = {
   },
 
   name: "unmute",
-  description: "Unmuute a user.",
+  description: "Unmute a user.",
   options: [
     {
       name: "user",

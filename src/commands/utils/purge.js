@@ -21,17 +21,6 @@ module.exports = {
 
     return interaction.channel.send({ embeds: [successEmbed] });
   },
-  name: "purge",
-  description: "Delete messages in bulk limit 100",
-  options: [
-    {
-      name: "amount",
-      description: "Number of messages to delete",
-      type: ApplicationCommandOptionType.Integer,
-      required: true,
-    },
-  ],
-
   run: async (client, message, args) => {
     const amount = parseInt(args[0]) || 100; // Default to 100 if no amount is provided
 
@@ -45,6 +34,17 @@ module.exports = {
 
     return message.channel.send({ embeds: [successEmbed] });
   },
+  name: "purge",
+  description: "Delete messages in bulk limit 100",
+  options: [
+    {
+      name: "amount",
+      description: "Number of messages to delete",
+      type: ApplicationCommandOptionType.Integer,
+      required: true,
+    },
+  ],
+
   permissionsRequired: [PermissionFlagsBits.ManageMessages],
   botPermissions: [PermissionFlagsBits.ManageMessages],
 };
