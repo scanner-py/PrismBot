@@ -7,77 +7,49 @@ module.exports = async (client, interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   const localCommands = getLocalCommands();
+  const commandObject = localCommands.find((cmd) => cmd.name === interaction.commandName);
+
+  if (!commandObject) return;
+
+  const sendErrorEmbed = (description) => {
+    const embed = new EmbedBuilder()
+      .setColor(red)
+      .setTitle("Access Denied")
+      .setDescription(description);
+
+    interaction.reply({
+      embeds: [embed],
+      ephemeral: true,
+    });
+  };
+
+  // check if using command in guild
+  if (!interaction.inGuild()) {
+    return sendErrorEmbed("You can only run this command inside a server.");
+  } else if (commandObject.devOnly && !devs.includes(interaction.member.id)) {
+    return sendErrorEmbed("Only developers are allowed to run this command.");
+  } else if (commandObject.testOnly && interaction.guild.id !== testServer) {
+    return sendErrorEmbed("This command cannot be run here.");
+  } 
+  
+  if (commandObject.permissionsRequired?.length) {
+    for (const permission of commandObject.permissionsRequired) {
+      if (!interaction.member.permissions.has(permission)) {
+        return sendErrorEmbed("You do not have enough permissions.");
+      }
+    }
+  }
+
+  if (commandObject.botPermissions?.length) {
+    const bot = interaction.guild.members.me;
+    for (const permission of commandObject.botPermissions) {
+      if (!bot.permissions.has(permission)) {
+        return sendErrorEmbed("I don't have enough permissions.");
+      }
+    }
+  }
 
   try {
-    const commandObject = localCommands.find(
-      (cmd) => cmd.name === interaction.commandName
-    );
-
-    if (!commandObject) return;
-
-    if (commandObject.devOnly) {
-      if (!devs.includes(interaction.member.id)) {
-        const embed = new EmbedBuilder()
-          .setColor(red)
-          .setTitle("Access Denied")
-          .setDescription("Only developers are allowed to run this command.");
-
-        interaction.reply({
-          embeds: [embed],
-          ephemeral: true,
-        });
-        return;
-      }
-    }
-
-    if (commandObject.testOnly) {
-      if (!(interaction.guild.id === testServer)) {
-        const embed = new EmbedBuilder()
-          .setColor(red)
-          .setTitle("Access Denied")
-          .setDescription("This command cannot be ran here.");
-        interaction.reply({
-          embeds: [embed],
-          ephemeral: true,
-        });
-        return;
-      }
-    }
-
-    if (commandObject.permissionsRequired?.length) {
-      for (const permission of commandObject.permissionsRequired) {
-        if (!interaction.member.permissions.has(permission)) {
-          const embed = new EmbedBuilder()
-            .setColor(red)
-            .setTitle("Access Denied")
-            .setDescription("you donot have enough permissions.");
-          interaction.reply({
-            embeds: [embed],
-            ephemeral: true,
-          });
-          return;
-        }
-      }
-    }
-
-    if (commandObject.botPermissions?.length) {
-      for (const permission of commandObject.botPermissions) {
-        const bot = interaction.guild.members.me;
-
-        if (!bot.permissions.has(permission)) {
-          const embed = new EmbedBuilder()
-            .setColor(red)
-            .setDescription("I don't have enough permissions.");
-          interaction.reply({
-            embeds: [embed],
-            ephemeral: true,
-          });
-
-          return;
-        }
-      }
-    }
-
     await commandObject.callback(client, interaction);
   } catch (error) {
     console.log(`There was an error running this command: ${error}`);

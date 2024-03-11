@@ -10,187 +10,6 @@ const checkUserPermissions = require("../../utils/checkUserPermissions");
 const checkUserPermissionsPrefixCmd = require("../../utils/checkUserPermissionsPrefixCmd");
 const { red, green } = require("../../../data/colors.json");
 module.exports = {
-  /**
-   *
-   * @param {Client} client
-   * @param {Interaction} interaction
-   */
-
-  callback: async (client, interaction) => {
-    const mentionable = interaction.options.get("user").value;
-    const duration = interaction.options.get("duration").value; // 1d, 1 day, 1s 5s, 5m
-    const reason =
-      interaction.options.get("reason")?.value || "No reason provided";
-
-    // Check if the user is trying to mute themselves
-    if (mentionable === interaction.user.id) {
-      const embed = new EmbedBuilder()
-        .setDescription(`<:No:1215704504180146277> You cannot mute yourself.`)
-        .setColor(red);
-      await interaction.reply({ embeds: [embed], ephemeral: true });
-      return;
-    }
-
-    // await interaction.deferReply();
-    const targetUser = await checkUserPermissions(interaction, mentionable);
-    if (!targetUser) return;
-    const msDuration = ms(duration);
-    if (isNaN(msDuration)) {
-      const embed = new EmbedBuilder()
-        .setDescription(
-          `<:No:1215704504180146277> Please provide a valid mute duration.`
-        )
-        .setColor(red);
-      await interaction.reply({ embeds: [embed], ephemeral: true });
-      return;
-    }
-
-    if (msDuration < 5000 || msDuration > 2.419e9) {
-      const embed = new EmbedBuilder()
-        .setDescription(
-          `<:No:1215704504180146277> Mute duration cannot be less than 5 seconds or more than 28 days.`
-        )
-        .setColor(red);
-      await interaction.reply({ embeds: [embed], ephemeral: true });
-      return;
-    }
-
-    // Timeout the user
-    try {
-      const { default: prettyMs } = await import("pretty-ms");
-
-      if (targetUser.isCommunicationDisabled()) {
-        await targetUser.timeout(msDuration, reason);
-        const embed = new EmbedBuilder()
-          .setDescription(
-            `<:right:1216014282957918259> ${targetUser}'s mute duration has been updated to ${prettyMs(
-              msDuration,
-              {
-                verbose: true,
-              }
-            )} | ${reason}`
-          )
-          .setColor(green);
-        await interaction.reply({ embeds: [embed] });
-        return;
-      }
-
-      // Send a DM to the kicked user
-      const dmEmbed = new EmbedBuilder()
-        .setDescription(
-          `You have been Muted in **${
-            interaction.guild.name
-          }** by **${interaction.user.username}** for **${prettyMs(msDuration, {
-            verbose: true,
-          })}**. \nReason: ${reason}`
-        )
-        .setColor(red);
-      await targetUser.send({ embeds: [dmEmbed] }).catch((error) => {
-        console.error(
-          `Failed to send DM to ${targetUser.user.username}: ${error}`
-        );
-      });
-
-      await targetUser.timeout(msDuration, reason);
-      const embed = new EmbedBuilder()
-
-        .setDescription(
-          `<:right:1216014282957918259> ${targetUser} was muted for ${prettyMs(
-            msDuration,
-            {
-              verbose: true,
-            }
-          )} |  ${reason}`
-        )
-        .setColor(green);
-      await interaction.reply({ embeds: [embed] });
-    } catch (error) {
-      console.log(`There was an error when timing out: ${error}`);
-    }
-  },
-
-  run: async (client, message, args) => {
-    const deleteRespond = (msg) => {
-      setTimeout(() => msg.delete(), 5000); // delete the reply after 5 sce
-    };
-    const mentionedUser = message.mentions.members.first();
-    const duration = args[1];
-    const reason = args.slice(2).join(" ") || "No reason provided";
-    const targetUser = await checkUserPermissionsPrefixCmd(
-      message,
-      mentionedUser
-    );
-    if (!targetUser) return; // If the function returns null, exit the command
-
-    const msDuration = ms(duration);
-    if (isNaN(msDuration)) {
-      const embed = new EmbedBuilder()
-        .setDescription(
-          `<:No:1215704504180146277> Please provide a valid mute duration.`
-        )
-        .setColor(red);
-      return message.channel.send({ embeds: [embed] }).then(deleteRespond);
-    }
-
-    if (msDuration < 5000 || msDuration > 2.419e9) {
-      const embed = new EmbedBuilder()
-        .setDescription(
-          `<:No:1215704504180146277> Mute duration cannot be less than 5 seconds or more than 28 days.`
-        )
-        .setColor(red);
-      return message.channel.send({ embeds: [embed] }.then(deleteRespond));
-    }
-
-    try {
-      const { default: prettyMs } = await import("pretty-ms");
-
-      if (mentionedUser.isCommunicationDisabled()) {
-        await mentionedUser.timeout(msDuration, reason);
-        const embed = new EmbedBuilder()
-          .setDescription(
-            `<:right:1216014282957918259> | ${mentionedUser}'s mute duration has been updated to ${prettyMs(
-              msDuration,
-              {
-                verbose: true,
-              }
-            )} | ${reason}`
-          )
-          .setColor(green);
-        return message.channel.send({ embeds: [embed] });
-      }
-
-      const dmEmbed = new EmbedBuilder()
-        .setDescription(
-          `You have been muted in **${
-            message.guild.name
-          }** by **${message.author.username}** for **${prettyMs(msDuration, {
-            verbose: true,
-          })}**. \nReason: ${reason}`
-        )
-        .setColor(red);
-      await mentionedUser.send({ embeds: [dmEmbed] }).catch((error) => {
-        console.error(
-          `Failed to send DM to ${mentionedUser.user.username}: ${error}`
-        );
-      });
-
-      await mentionedUser.timeout(msDuration, reason);
-      const embed = new EmbedBuilder()
-        .setDescription(
-          `<:right:1216014282957918259> ${mentionedUser} was muted for ${prettyMs(
-            msDuration,
-            {
-              verbose: true,
-            }
-          )} | ${reason}`
-        )
-        .setColor(green);
-      return message.channel.send({ embeds: [embed] });
-    } catch (error) {
-      console.log(`There was an error when timing out: ${error}`);
-    }
-  },
-
   name: "mute",
   description: "Mute a user.",
   options: [
@@ -214,4 +33,79 @@ module.exports = {
   ],
   permissionsRequired: [PermissionFlagsBits.MuteMembers],
   botPermissions: [PermissionFlagsBits.MuteMembers],
+
+  callback: async (client, interaction) => {
+    const mentionable = interaction.options.get("user").value;
+    const duration = interaction.options.get("duration").value; // 1d, 1 day, 1s 5s, 5m
+    const reason = interaction.options.get("reason")?.value || "No reason provided";
+
+    const targetUser = await checkUserPermissions(interaction, mentionable);
+    if (!targetUser) return;
+
+    const msDuration = ms(duration);
+    validateMuteDuration(msDuration, interaction);
+    const muteEmbed = await handleMute(targetUser, reason, msDuration, interaction)
+
+    await interaction.reply({ embeds: [muteEmbed] });
+  },
+
+  run: async (client, message, args) => {
+    const deleteRespond = (msg) => {
+      setTimeout(() => msg.delete(), 5000);
+    };
+
+    const mentionedUser = message.mentions.members.first();
+    const duration = args[1];
+    const reason = args.slice(2).join(" ") || "No reason provided";
+
+    const targetUser = await checkUserPermissionsPrefixCmd(message, mentionedUser);
+    if (!targetUser) return;
+
+    const msDuration = ms(duration);
+    validateMuteDuration(msDuration, message).then(deleteRespond);
+    const muteEmbed = await handleMute(mentionedUser, reason, msDuration, message);
+
+    return message.channel.send({ embeds: [muteEmbed] });
+  }
 };
+
+async function validateMuteDuration(msDuration, interactionOrmsg) {
+  // check if duration given is a valid number or not
+  if (isNaN(msDuration)) {
+    const embed = new EmbedBuilder()
+      .setDescription(`<:No:1215704504180146277> Please provide a valid mute duration.`)
+      .setColor(red);
+    return await interactionOrmsg.channel.send({ embeds: [embed], ephemeral: true });
+  }
+  // check if duration given by user is greater 5 and less then 28 days
+  if (msDuration < 5000 || msDuration > 2.419e9) {
+    const embed = new EmbedBuilder()
+      .setDescription(`<:No:1215704504180146277> Mute duration cannot be less than 5 seconds or more than 28 days.`)
+      .setColor(red);
+    return await interactionOrmsg.channel.send({ embeds: [embed], ephemeral: true });
+
+  }
+}
+
+async function handleMute(targetUser, reason, msDuration, interactionOrMsg) {
+  const { default: prettyMs } = await import("pretty-ms");
+
+  try {
+    if (targetUser.isCommunicationDisabled()) {
+      await targetUser.timeout(msDuration, reason);
+      const embed = new EmbedBuilder()
+        .setDescription(`<:right:1216014282957918259> ${targetUser}'s mute duration has been updated to ${prettyMs(msDuration, { verbose: true, })} | ${reason}`)
+        .setColor(green);
+      return embed;
+    } else {
+      await targetUser.timeout(msDuration, reason);
+      const embed = new EmbedBuilder()
+        .setDescription(`<:right:1216014282957918259> ${targetUser} was muted for ${prettyMs(msDuration, { verbose: true, })} |  ${reason}`)
+        .setColor(green);
+      return embed;
+    }
+  } catch (e) {
+    console.log(e)
+    interactionOrMsg.channel.send('An error occurred')
+  }
+}
