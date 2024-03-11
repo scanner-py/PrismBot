@@ -2,6 +2,7 @@ require("dotenv").config();
 const { Client, GatewayIntentBits } = require("discord.js");
 const eventHandlers = require("./handlers/eventHandlers");
 const handlePrefixCommands = require("./events/interactionCreate/handlePrefixCommands");
+const mongoose = require("mongoose");
 
 const client = new Client({
   intents: [
@@ -9,6 +10,7 @@ const client = new Client({
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildPresences,
   ],
 });
 
@@ -23,6 +25,13 @@ client.on("messageCreate", (message) => {
   }
 });
 
-eventHandlers(client);
-
-client.login(process.env.BOT_TOKEN);
+(async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log("Connected to data base.");
+    eventHandlers(client);
+    client.login(process.env.BOT_TOKEN);
+  } catch (error) {
+    console.error("Error connecting to data base :" + error);
+  }
+})();
