@@ -50,10 +50,6 @@ module.exports = {
   },
 
   run: async (client, message, args) => {
-    const deleteRespond = (msg) => {
-      setTimeout(() => msg.delete(), 5000);
-    };
-
     const mentionedUser = message.mentions.members.first();
     const duration = args[1];
     const reason = args.slice(2).join(" ") || "No reason provided";
@@ -62,7 +58,7 @@ module.exports = {
     if (!targetUser) return;
 
     const msDuration = ms(duration);
-    validateMuteDuration(msDuration, message).then(deleteRespond);
+    validateMuteDuration(msDuration, message);
     const muteEmbed = await handleMute(mentionedUser, reason, msDuration, message);
 
     return message.channel.send({ embeds: [muteEmbed] });
@@ -89,7 +85,6 @@ async function validateMuteDuration(msDuration, interactionOrmsg) {
 
 async function handleMute(targetUser, reason, msDuration, interactionOrMsg) {
   const { default: prettyMs } = await import("pretty-ms");
-
   try {
     if (targetUser.isCommunicationDisabled()) {
       await targetUser.timeout(msDuration, reason);
