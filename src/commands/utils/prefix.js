@@ -2,7 +2,6 @@ const { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } = requ
 const Guild = require("../../schemas/guild");
 const { transparent } = require('../../../data/colors.json')
 const { setGuildPrefix } = require('../../utils/guildUtils');
-const { intersection } = require("lodash");
 
 module.exports = {
     name: "prefix",
@@ -24,12 +23,8 @@ module.exports = {
     },
 
     run: async (client, message, args) => {
-        let newPrefix;
-        if (args.length === 1) {
-            newPrefix = args[0]; // If there's only one argument, use it as the prefix
-        } else {
-            newPrefix = args.join(' '); // Join multiple arguments with a space
-        }
+        let newPrefix = args[0]; // If there's only one argument, use it as the prefix
+
         await setGuildPrefix(message.guild.id, newPrefix, message);
         await setPrefix(message, newPrefix);
 

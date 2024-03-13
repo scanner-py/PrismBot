@@ -16,7 +16,9 @@ module.exports = {
 
     try {
       await message.author.send({ embeds: [helpEmbed] });
-      await message.channel.send("I have sent you a direct message.").then(deleteResponse) // Delete the response after a delay
+      await message.channel
+        .send("I have sent you a direct message.")
+        .then(deleteResponse); // Delete the response after a delay
     } catch (error) {
       console.error("Failed to send direct message:", error);
       await message.channel.send("I was unable to send you a direct message.");

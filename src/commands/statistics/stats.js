@@ -5,14 +5,13 @@ module.exports = {
   name: "stats",
   description: "bot statistics",
   devOnly: true,
-  deleted: false,
 
   callback: async (client, interaction) => {
-    const statsEmbed = await getUptimeStats();
+    const statsEmbed = getUptimeStats();
     interaction.reply({ embeds: [statsEmbed] });
   },
   run: async (client, message, args) => {
-    const statsEmbed = await getUptimeStats();
+    const statsEmbed = getUptimeStats();
     message.channel.send({ embeds: [statsEmbed] });
   },
 };

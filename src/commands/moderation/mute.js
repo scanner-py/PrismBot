@@ -43,9 +43,23 @@ module.exports = {
     if (!targetUser) return;
 
     const msDuration = ms(duration);
-    validateMuteDuration(msDuration, interaction);
-    const muteEmbed = await handleMute(targetUser, reason, msDuration, interaction)
 
+    if (isNaN(msDuration)) {
+      const errEmd = new EmbedBuilder()
+        .setDescription(`<:No:1215704504180146277> Please provide a valid mute duration.`)
+        .setColor(red);
+      return interaction.reply({ embeds: [errEmd], ephemeral: true });
+    }
+    // check if duration given by user is greater 5 and less then 28 days
+    if (msDuration < 5000 || msDuration > 2.419e9) {
+      const errEmd = new EmbedBuilder()
+        .setDescription(`<:No:1215704504180146277> Mute duration cannot be less than 5 seconds or more than 28 days.`)
+        .setColor(red);
+      return interaction.reply({ embeds: [errEmd], ephemeral: true });
+
+    }
+
+    const muteEmbed = await handleMute(targetUser, reason, msDuration, interaction)
     await interaction.reply({ embeds: [muteEmbed] });
   },
 
@@ -58,49 +72,44 @@ module.exports = {
     if (!targetUser) return;
 
     const msDuration = ms(duration);
-    validateMuteDuration(msDuration, message);
-    const muteEmbed = await handleMute(mentionedUser, reason, msDuration, message);
 
+    if (isNaN(msDuration)) {
+      const errEmd = new EmbedBuilder()
+        .setDescription(`<:No:1215704504180146277> Please provide a valid mute duration.`)
+        .setColor(red);
+      return message.channel.send({ embeds: [errEmd] }).then(deleteResponse);
+    }
+    // check if duration given by user is greater 5 and less then 28 days
+    if (msDuration < 5000 || msDuration > 2.419e9) {
+      const errEmd = new EmbedBuilder()
+        .setDescription(`<:No:1215704504180146277> Mute duration cannot be less than 5 seconds or more than 28 days.`)
+        .setColor(red);
+      return message.channel.send({ embeds: [errEmd] }).then(deleteResponse);
+
+    }
+
+    const muteEmbed = await handleMute(mentionedUser, reason, msDuration, message);
     return message.channel.send({ embeds: [muteEmbed] });
   }
 };
 
-async function validateMuteDuration(msDuration, interactionOrmsg) {
-  // check if duration given is a valid number or not
-  if (isNaN(msDuration)) {
+async function handleMute(targetUser, reason, msDuration, interactionOrMsg) {
+  const { default: prettyMs } = await import("pretty-ms");
+  if (targetUser.isCommunicationDisabled()) {
+    await targetUser.timeout(msDuration, reason);
     const embed = new EmbedBuilder()
-      .setDescription(`<:No:1215704504180146277> Please provide a valid mute duration.`)
-      .setColor(red);
-    return await interactionOrmsg.channel.send({ embeds: [embed], ephemeral: true });
-  }
-  // check if duration given by user is greater 5 and less then 28 days
-  if (msDuration < 5000 || msDuration > 2.419e9) {
+      .setDescription(`<:right:1216014282957918259> ${targetUser}'s mute duration has been updated to ${prettyMs(msDuration, { verbose: true, })} | ${reason}`)
+      .setColor(green);
+    return embed;
+  } else {
+    await targetUser.timeout(msDuration, reason);
     const embed = new EmbedBuilder()
-      .setDescription(`<:No:1215704504180146277> Mute duration cannot be less than 5 seconds or more than 28 days.`)
-      .setColor(red);
-    return await interactionOrmsg.channel.send({ embeds: [embed], ephemeral: true });
-
+      .setDescription(`<:right:1216014282957918259> ${targetUser} was muted for ${prettyMs(msDuration, { verbose: true, })} |  ${reason}`)
+      .setColor(green);
+    return embed;
   }
 }
 
-async function handleMute(targetUser, reason, msDuration, interactionOrMsg) {
-  const { default: prettyMs } = await import("pretty-ms");
-  try {
-    if (targetUser.isCommunicationDisabled()) {
-      await targetUser.timeout(msDuration, reason);
-      const embed = new EmbedBuilder()
-        .setDescription(`<:right:1216014282957918259> ${targetUser}'s mute duration has been updated to ${prettyMs(msDuration, { verbose: true, })} | ${reason}`)
-        .setColor(green);
-      return embed;
-    } else {
-      await targetUser.timeout(msDuration, reason);
-      const embed = new EmbedBuilder()
-        .setDescription(`<:right:1216014282957918259> ${targetUser} was muted for ${prettyMs(msDuration, { verbose: true, })} |  ${reason}`)
-        .setColor(green);
-      return embed;
-    }
-  } catch (e) {
-    console.log(e)
-    interactionOrMsg.channel.send('An error occurred')
-  }
+function deleteResponse(message) {
+  setTimeout(() => message.delete(), 5000); // Delete the message after 5 seconds
 }

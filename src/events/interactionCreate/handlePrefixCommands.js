@@ -23,7 +23,7 @@ module.exports = async (client, message) => {
 
   const args = message.content.slice(prefix.length).trim().split(/ +/);
   const commandName = args.shift().toLowerCase();
-  const command = localCommands.find((cmd) => cmd.name === commandName);
+  const command = localCommands.find((cmd) => cmd.name === commandName || (cmd.aliases && cmd.aliases.includes(commandName)));
 
   if (!command) return; // If the command doesn't exist, return
 
