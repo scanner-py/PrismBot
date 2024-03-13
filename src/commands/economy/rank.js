@@ -86,7 +86,7 @@ async function buildRankImage(targetUserObj, fetchedLevel, currentRank) {
     .setCurrentXP(fetchedLevel.xp)
     .setRequiredXP(calculateLevelXp(fetchedLevel.level))
     .setProgressBar("#FFFF", "COLOR")
-    .setUsername(targetUserObj.user.displayName);
+    .setUsername(targetUserObj.user.username);
   rank.setStatus(targetUserObj.presence?.status || "offline");
 
   const data = await rank.build();

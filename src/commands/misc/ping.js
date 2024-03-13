@@ -4,8 +4,6 @@ const { transparent } = require("../../../data/colors.json");
 module.exports = {
   name: "ping",
   description: "Check the bot ping",
-  deleted: false,
-
   /**
    * Handles the ping command when used as a slash command.
    * @param {import('discord.js').Client} client The Discord client instance.
