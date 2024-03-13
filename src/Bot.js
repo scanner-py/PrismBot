@@ -28,7 +28,7 @@ client.on("messageCreate", (message) => {
 (async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI);
-    console.log("Connected to data base.");
+    console.log("Connected to DB.");
     eventHandlers(client);
     client.login(process.env.BOT_TOKEN);
   } catch (error) {

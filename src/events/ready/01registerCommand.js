@@ -27,16 +27,12 @@ module.exports = async (client) => {
             description,
             options,
           });
-
           console.log(chalk.hex("#eb34e1")(`🔁 Edited command "${name}".`));
         }
       } else {
         if (localCommand.deleted) {
           console.log(
-            chalk.blue(
-              `⏩ Skipping registering command "${name}" as it's set to delete.`
-            )
-          );
+            chalk.blue(`⏩ Skipping registering command "${name}" as it's set to delete.`));
           continue;
         }
 
@@ -45,7 +41,6 @@ module.exports = async (client) => {
           description,
           options,
         });
-
         console.log(chalk.hex("#00FF00")(`✅ Registered command "${name}."`));
       }
     }

@@ -1,12 +1,14 @@
 const { red } = require("../../data/colors.json");
-const { prefix } = require("../../config.json");
 const getLocalCommands = require("./getLocalCommands");
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
+const { getGuildPrefix } = require('./guildUtils');
 
 module.exports = async (message, mentionedUser) => {
   const targetUserRolePosition = mentionedUser?.roles.highest.position;
   const requestUserRolePosition = message.member.roles.highest.position;
   const botRolePosition = message.guild.members.me.roles.highest.position;
+
+  const prefix = await getGuildPrefix(message.guild.id); // Get the custom prefix for the guild
 
   const args = message.content.slice(prefix.length).trim().split(/ +/);
   const commandName = args.shift().toLowerCase();

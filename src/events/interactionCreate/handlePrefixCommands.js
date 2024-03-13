@@ -1,23 +1,25 @@
-const { prefix, devs, testServer } = require("../../../config.json");
+const { defaultPrefix, devs, testServer } = require("../../../config.json");
 const getLocalCommands = require("../../utils/getLocalCommands");
 const { EmbedBuilder } = require("discord.js");
 const { red, transparent } = require("../../../data/colors.json");
+const { getGuildPrefix } = require('../../utils/guildUtils');
 
 module.exports = async (client, message) => {
   if (!message.content || message.author.bot) return; // Ignore messages from bots
 
   const localCommands = getLocalCommands();
 
+  const prefix = await getGuildPrefix(message.guild.id); // Get the custom prefix for the guild
+  const bot = `<@${client.user.id}>`
   // Check if the bot is pinged
-  if (message.content === `<@${client.user.id}>`) {
+  if (message.content === bot) {
     const embed = new EmbedBuilder()
       .setDescription(`My prefix is \`${prefix}\`. Type \`${prefix}help\` to see my commands.`)
       .setColor(transparent);
     return message.reply({ embeds: [embed] });
   }
 
-  // Check if the message starts with the prefix
-  if (!message.content.startsWith(prefix)) return;
+  if (!message.content.startsWith(prefix)) return; // Check if the message starts with the prefix
 
   const args = message.content.slice(prefix.length).trim().split(/ +/);
   const commandName = args.shift().toLowerCase();
