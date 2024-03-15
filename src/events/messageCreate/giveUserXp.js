@@ -1,5 +1,5 @@
 const { Client, Message } = require("discord.js");
-const Level = require("../../schemas/level");
+const Level = require("../../schemas/user");
 const calculateLevelXp = require("../../utils/calculateLevelXp");
 const { prefix } = require("../../../config.json");
 

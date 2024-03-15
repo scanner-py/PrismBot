@@ -24,7 +24,7 @@ module.exports = {
     await interaction.deferReply();
     const messages = await interaction.channel.messages.fetch({ limit: amount, });
 
-    const fooEmbed = await bulkDeleteMessages (interaction, messages, amount)
+    const fooEmbed = await bulkDeleteMessages(interaction, messages, amount)
     return interaction.channel.send({ embeds: [fooEmbed] });
   },
 
@@ -32,12 +32,12 @@ module.exports = {
     const amount = parseInt(args[0]) || 100; // Default to 100 if no amount is provided
     const messages = await message.channel.messages.fetch({ limit: amount });
 
-    const fooEmbed = await bulkDeleteMessages (message, messages, amount)
+    const fooEmbed = await bulkDeleteMessages(message, messages, amount)
     return message.channel.send({ embeds: [fooEmbed] });
   },
 };
 
-async function bulkDeleteMessages (interactionOrMsg, messages, amount) {
+async function bulkDeleteMessages(interactionOrMsg, messages, amount) {
   await interactionOrMsg.channel.bulkDelete(messages, true);
 
   const successEmbed = new EmbedBuilder()

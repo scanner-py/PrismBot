@@ -30,8 +30,8 @@ module.exports = async (client, interaction) => {
     return sendErrorEmbed("Only developers are allowed to run this command.");
   } else if (commandObject.testOnly && interaction.guild.id !== testServer) {
     return sendErrorEmbed("This command cannot be run here.");
-  } 
-  
+  }
+
   if (commandObject.permissionsRequired?.length) {
     for (const permission of commandObject.permissionsRequired) {
       if (!interaction.member.permissions.has(permission)) {

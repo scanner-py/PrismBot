@@ -4,7 +4,6 @@ const { transparent } = require("../../../data/colors.json");
 module.exports = {
   name: "help",
   description: "Get help with the bot commands",
-  deleted: false,
 
   callback: (client, interaction) => {
     const helpEmbed = createHelpEmbed();

@@ -3,6 +3,7 @@ const { Client, GatewayIntentBits } = require("discord.js");
 const eventHandlers = require("./handlers/eventHandlers");
 const handlePrefixCommands = require("./events/interactionCreate/handlePrefixCommands");
 const mongoose = require("mongoose");
+const { createGuildSettings } = require('./utils/createGuildSettings')
 
 const client = new Client({
   intents: [
@@ -14,14 +15,18 @@ const client = new Client({
   ],
 });
 
-client.on("messageCreate", (message) => {
-  handlePrefixCommands(client, message);
+client.on("messageCreate", async (message) => {
+  await handlePrefixCommands(client, message);
 });
 
-client.on("messageCreate", (message) => {
+client.on('guildCreate', async (guild) => {
+  await createGuildSettings(guild);
+});
+
+client.on("messageCreate", async (message) => {
   const egg = message.content.toLowerCase();
   if (egg.includes("egg")) {
-    message.react("🥚");
+    await message.react("🥚");
   }
 });
 
