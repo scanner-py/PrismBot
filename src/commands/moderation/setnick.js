@@ -25,35 +25,45 @@ module.exports = {
 		const targetUser = interaction.options.getUser('user');
 		const newNickname = interaction.options.getString('nickname');
 		const targetMember = await interaction.guild.members.fetch(targetUser.id);
-		await handleSetNick(targetUser, newNickname, targetMember, interaction);
+		const oldNickname = targetMember.nickname;
+		const sucEmbed = await handleSetNick(targetUser, newNickname, targetMember, oldNickname);
+
+		interaction.reply({ embeds: [sucEmbed] }) // send success message.
 	},
 
 	run: async (client, message, args) => {
 		const mentionedUser = message.mentions.members.first();
 		const newNickname = args.slice(1).join(" ");
 		const targetMember = await message.guild.members.fetch(mentionedUser.id);
+		const oldNickname = targetMember.nickname;
+
 		const embed = new EmbedBuilder()
 			.setColor(red)
 			.setDescription('<:No:1215704504180146277> please mention a user and provide nickname.')
-		if (!mentionedUser || !newNickname) return message.channel.send({ embeds: [embed] });
 
-		await handleSetNick(mentionedUser, newNickname, targetMember, message);
+		// check if user is mentioned and nickname is given.
+		if (!mentionedUser || !newNickname) return message.channel.send({ embeds: [embed] });
+		const sucEmbd = await handleSetNick(mentionedUser, newNickname, targetMember, oldNickname);
+
+		await message.channel.send({ embeds: [sucEmbd] })
 
 	}
 }
 
-async function handleSetNick(targetUser, newNickname, targetMember, interactionOrMsg) {
-	const oldNickname = targetMember.nickname;
-	const embed = new EmbedBuilder()
-		.setColor(green)
-		.setDescription(`<:right:1216014282957918259> Set ${oldNickname} to ${newNickname}`)
+async function handleSetNick(targetUser, newNickname, targetMember, oldNickname) {
 
 	try {
+		const embed = new EmbedBuilder()
+			.setColor(green)
+			.setDescription(`<:right:1216014282957918259> Set ${oldNickname} to ${newNickname}`)
 		await targetMember.setNickname(newNickname);
-
-		await interactionOrMsg.channel.send({ embeds: [embed], ephemeral: true });
+		return embed;
 	} catch (error) {
-		console.error(error);
-		interactionOrMsg.channel.send({ content: 'Failed to set nickname.', ephemeral: true });
+		const embed = new EmbedBuilder()
+			.setColor(red)
+			.setDescription('<:No:1215704504180146277> failed to change nickname')
+		return embed;
 	}
+
+
 }

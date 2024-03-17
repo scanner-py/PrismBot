@@ -17,6 +17,7 @@ const userSchema = new Schema({
     type: Number,
     default: 0,
   },
+  
 });
 
 module.exports = model("user", userSchema);
